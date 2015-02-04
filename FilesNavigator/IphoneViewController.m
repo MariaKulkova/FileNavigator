@@ -15,26 +15,14 @@
 
 @implementation IphoneViewController
 
+- (id) initWithCoder:(NSCoder *)aDecoder{
+    self = [super initWithCoder:aDecoder];
+    return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-}
-
-- (void) viewDidAppear:(BOOL)animated{
-    [super viewDidAppear:animated];
-}
-
-- (void) viewDidLayoutSubviews{
-    [super viewDidLayoutSubviews];
-    [self calculateObjectFrame:[[UIScreen mainScreen] bounds]];
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void) calculateObjectFrame: (CGRect) frame{
-    //[self.view setFrame:CGRectMake(frame.origin.x, frame.origin.y, frame.size.width, frame.size.height)];
+    [self.view addSubview:[self.navigationController view]];
 }
 
 @end

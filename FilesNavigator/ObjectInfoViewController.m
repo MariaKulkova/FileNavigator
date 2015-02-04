@@ -47,14 +47,15 @@
 // Converts long value Unix-representation of file permissions to human-readable format
 - (NSString *) convertPermissionToString: (long) permission
 {
-    NSArray *permsArray = [NSArray arrayWithObjects:@"---", @"--x", @"-w-", @"-wx", @"r--", @"r-x", @"rw-", @"rwx", nil];
+    NSArray *permissionsArray = [NSArray arrayWithObjects:@"---", @"--x", @"-w-", @"-wx", @"r--", @"r-x", @"rw-", @"rwx", nil];
     NSMutableString *result = [NSMutableString string];
     
     for (int i = 2; i >= 0; i--)
     {
         // gets each group containing three bits which represent one of permissions group
         unsigned long thisPart = (permission >> (i * 3)) & 0x7;
-        [result appendString:[permsArray objectAtIndex:thisPart]];
+        [result appendString:[permissionsArray objectAtIndex:thisPart]];
+        [result appendString:@" "];
     }
     
     return (result);

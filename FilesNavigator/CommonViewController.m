@@ -20,15 +20,14 @@
 
 #pragma mark - UIViewController
 
-- (id) init{
-    if (self = [super init]) {
-//        NSString *pathToRoot = @"/";
-//        ObjectsTableViewController *rootTableController = [[ObjectsTableViewController alloc] initWithFilePath:pathToRoot];
-//        self.navigationController = [[FileSystemNavigationController alloc] initWithRootViewController:rootTableController];
+- (id) initWithCoder:(NSCoder *)aDecoder{
+    if (self = [super initWithCoder:aDecoder]) {
+        NSString *pathToRoot = @"/";
+        ObjectsTableViewController *rootTableController = [[ObjectsTableViewController alloc] initWithFilePath:pathToRoot];
+        self.navigationController = [[FileSystemNavigationController alloc] initWithRootViewController:rootTableController];
     }
     return self;
 }
-
 
 #pragma mark - Rotation for iOS 8.0
 

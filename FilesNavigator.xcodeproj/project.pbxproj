@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		4C85C5B21A69546D000B4BF7 /* MyCustomCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C85C5B11A69546D000B4BF7 /* MyCustomCell.xib */; };
 		4C85C5B41A695B54000B4BF7 /* iPhoneStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C85C5B31A695B54000B4BF7 /* iPhoneStoryboard.storyboard */; };
+		4CC328EB1A82215100B2D6D5 /* MultipleInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CC328E91A82215100B2D6D5 /* MultipleInfoViewController.m */; };
+		4CC328EC1A82215100B2D6D5 /* MultipleInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4CC328EA1A82215100B2D6D5 /* MultipleInfoViewController.xib */; };
 		4CC5D85B1A792940006D8964 /* ObjectInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CC5D8591A792940006D8964 /* ObjectInfoViewController.m */; };
 		4CC5D85C1A792940006D8964 /* ObjectInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4CC5D85A1A792940006D8964 /* ObjectInfoViewController.xib */; };
 		4CC5EA241A7A661A00F904B7 /* CommonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CC5EA231A7A661A00F904B7 /* CommonViewController.m */; };
@@ -42,6 +44,9 @@
 /* Begin PBXFileReference section */
 		4C85C5B11A69546D000B4BF7 /* MyCustomCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyCustomCell.xib; sourceTree = "<group>"; };
 		4C85C5B31A695B54000B4BF7 /* iPhoneStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = iPhoneStoryboard.storyboard; sourceTree = "<group>"; };
+		4CC328E81A82215100B2D6D5 /* MultipleInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultipleInfoViewController.h; sourceTree = "<group>"; };
+		4CC328E91A82215100B2D6D5 /* MultipleInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultipleInfoViewController.m; sourceTree = "<group>"; };
+		4CC328EA1A82215100B2D6D5 /* MultipleInfoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MultipleInfoViewController.xib; sourceTree = "<group>"; };
 		4CC5D8581A792940006D8964 /* ObjectInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectInfoViewController.h; sourceTree = "<group>"; };
 		4CC5D8591A792940006D8964 /* ObjectInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjectInfoViewController.m; sourceTree = "<group>"; };
 		4CC5D85A1A792940006D8964 /* ObjectInfoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ObjectInfoViewController.xib; sourceTree = "<group>"; };
@@ -111,6 +116,8 @@
 				4CC82DFB1A71417300E98F97 /* FileSystemNavigationController.m */,
 				4CC5D8581A792940006D8964 /* ObjectInfoViewController.h */,
 				4CC5D8591A792940006D8964 /* ObjectInfoViewController.m */,
+				4CC328E81A82215100B2D6D5 /* MultipleInfoViewController.h */,
+				4CC328E91A82215100B2D6D5 /* MultipleInfoViewController.m */,
 				4CC837C91A6D3CE200542A89 /* ModelObjects */,
 			);
 			name = Controllers;
@@ -126,6 +133,7 @@
 				4CD0DA251A7BD28A003F2132 /* iPadStoryboard.storyboard */,
 				4C85C5B11A69546D000B4BF7 /* MyCustomCell.xib */,
 				4CC5D85A1A792940006D8964 /* ObjectInfoViewController.xib */,
+				4CC328EA1A82215100B2D6D5 /* MultipleInfoViewController.xib */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -288,6 +296,7 @@
 			files = (
 				4C85C5B41A695B54000B4BF7 /* iPhoneStoryboard.storyboard in Resources */,
 				4CCC13951A68E98F00D9D639 /* LaunchScreen.xib in Resources */,
+				4CC328EC1A82215100B2D6D5 /* MultipleInfoViewController.xib in Resources */,
 				4CC5D85C1A792940006D8964 /* ObjectInfoViewController.xib in Resources */,
 				4CC837C61A6D313900542A89 /* File.png in Resources */,
 				4CC837C81A6D317D00542A89 /* Folder.png in Resources */,
@@ -313,6 +322,7 @@
 			files = (
 				4CC82DFC1A71417300E98F97 /* FileSystemNavigationController.m in Sources */,
 				4CCC13BE1A68FC2E00D9D639 /* FileRepresentViewCell.m in Sources */,
+				4CC328EB1A82215100B2D6D5 /* MultipleInfoViewController.m in Sources */,
 				4CCC138A1A68E98F00D9D639 /* AppDelegate.m in Sources */,
 				4CCC13871A68E98F00D9D639 /* main.m in Sources */,
 				4CCC13BB1A68FB6F00D9D639 /* FileSystemItemInfo.m in Sources */,

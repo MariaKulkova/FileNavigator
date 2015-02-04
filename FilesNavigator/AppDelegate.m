@@ -21,15 +21,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-//    CommonViewController *rootFilesViewController;
-//    if ([deviceModel rangeOfString:@"iPad"].location != NSNotFound){
-//        rootFilesViewController = [[IpadViewController alloc] init];
-//    }else if ([deviceModel rangeOfString:@"iPhone"].location != NSNotFound){
-//        rootFilesViewController = [[IphoneViewController alloc] init];
-//    }
-    
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone){
-        self.window.rootViewController = [[IphoneViewController alloc] init];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iPhoneStoryboard" bundle:nil];
+        self.window.rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"iPhoneController"];
     }
     else{
         
@@ -37,14 +31,7 @@
         self.window.rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"iPadController"];
     }
     
-//    navigationController = [[FileSystemNavigationController alloc]
-//                            initWithRootViewController:rootFilesViewController];
-    
-//    id windows = application.windows;
-//    window = windows[0];//[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-//    window.rootViewController = rootFilesViewController;
     [window makeKeyAndVisible];
-    //[window addSubview:[rootFilesViewController view]];
     return YES;
 }
 
