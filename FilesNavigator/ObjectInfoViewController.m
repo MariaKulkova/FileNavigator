@@ -67,6 +67,13 @@
     self.objectImage.image = [UIImage imageNamed:@"Folder.png"];
 }
 
+- (void) viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    CGRect frame = self.calculationSpinner.frame;
+    frame.origin = self.objectSizeLabel.frame.origin;
+    [self.calculationSpinner setFrame:frame];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

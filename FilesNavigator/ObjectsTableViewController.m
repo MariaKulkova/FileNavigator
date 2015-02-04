@@ -59,7 +59,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -121,6 +121,16 @@
                     @try {
                         if (weakSelf.tableView != nil) {
                             
+                            dispatch_semaphore_wait(cancelledCalculationsSemaphor, DISPATCH_TIME_FOREVER);
+                            if (!cancelledSizeCalculation) {
+                                NSString *notificationName = @"SizeCalculationFinishedNotificator";
+                                NSString *key = @"Index";
+                                NSDictionary *dictionary = [NSDictionary dictionaryWithObject:[NSIndexPath indexPathForRow:i inSection:0] forKey:key];
+                                [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil userInfo:dictionary];
+                            }
+                            dispatch_semaphore_signal(cancelledCalculationsSemaphor);
+                            
+                            
                             NSArray *indexes = [weakSelf.tableView indexPathsForVisibleRows];
                             for (NSIndexPath *index in indexes) {
                                 if (index.row == i) {
@@ -179,7 +189,7 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+
     static NSString* cellIdentifier = @"reuseCell";
     FileRepresentViewCell *cell = [tableView dequeueReusableHeaderFooterViewWithIdentifier:cellIdentifier];
     
@@ -206,7 +216,6 @@
             // it has already recalculated
             cell.fileSizeLabel.text = [NSByteCountFormatter stringFromByteCount:fileListItem.capacity countStyle:NSByteCountFormatterCountStyleBinary];
             [cell.sizeCalculationSpinner stopAnimating];
-            [self.delegate processCompleted:indexPath.row];
         }
     }
     else{
@@ -228,7 +237,6 @@
     if ([fileListItem.fileType isEqualToString:NSFileTypeDirectory] || [fileListItem.fileType isEqualToString:NSFileTypeSymbolicLink]) {
         ObjectsTableViewController *directoryContentViewController = [[ObjectsTableViewController alloc]
                                                                 initWithFilePath:[reviewedFilePath stringByAppendingPathComponent:fileListItem.name]];
-        directoryContentViewController.delegate = self.delegate;
         
         if (directoryContentViewController == nil) {
             UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Can't open file"

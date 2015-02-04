@@ -10,9 +10,11 @@
 #import "ObjectInfoViewController.h"
 #import "FileSystemNavigationController.h"
 
-@interface IpadViewController : CommonViewController <ObjectsTableDelegate>
+@interface IpadViewController : CommonViewController <UIGestureRecognizerDelegate>
 {
     BOOL isDetailedPanelVisible;
+    
+    NSMutableArray *selectedItems;
 }
 
 @property (strong, nonatomic) ObjectInfoViewController *objectInfoController;

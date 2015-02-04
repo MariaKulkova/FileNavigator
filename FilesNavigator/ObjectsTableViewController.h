@@ -8,13 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@protocol ObjectsTableDelegate <NSObject>
-
-@required
-- (void) processCompleted: (int) index;
-
-@end
-
 @interface ObjectsTableViewController : UITableViewController <UIDocumentInteractionControllerDelegate>
 {
     // Custom queue for one directory size calculation task storage
@@ -37,9 +30,6 @@
     
     // Allows to preview documents
     UIDocumentInteractionController *documentInteractionController;
-    
-    // Delegate to respond back
-    id <ObjectsTableDelegate> _delegate;
 }
 
 /// Contains path to file which is reviewed by current controller
@@ -47,9 +37,6 @@
 
 /// Contains information about file system objects
 @property (strong, nonatomic) NSArray *filesList;
-
-/// Property for delegate
-@property (nonatomic,strong) id delegate;
 
 /**
  Initializes controller instance with path to file system object which content must be shown
