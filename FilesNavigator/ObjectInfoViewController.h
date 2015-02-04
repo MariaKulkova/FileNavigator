@@ -10,6 +10,9 @@
 #import "FileSystemItemInfo.h"
 
 @interface ObjectInfoViewController : UIViewController
+{
+    NSDateFormatter *dataFormat;
+}
 
 @property (weak, nonatomic) IBOutlet UIImageView *objectImage;
 

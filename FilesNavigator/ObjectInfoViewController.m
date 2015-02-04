@@ -10,9 +10,24 @@
 
 @interface ObjectInfoViewController ()
 
+/**
+ Converts long value Unix-representation of file permissions to human-readable format
+ @param permission (long) - determines permission in long type
+ @return string with such format as (rwxrwxrwx)
+ */
+- (NSString *) convertPermissionToString: (long) permission;
+
 @end
 
 @implementation ObjectInfoViewController
+
+- (id) init{
+    if (self = [super init]) {
+        dataFormat = [[NSDateFormatter alloc] init];
+        [dataFormat setDateFormat:@"yyyy.dd.MM HH:ss"];
+    }
+    return self;
+}
 
 - (void) representObjectInfo:(FileSystemItemInfo *)objectInfo{
     self.objectNameLabel.text = objectInfo.name;
@@ -25,7 +40,24 @@
     }
     self.objectOwnerLabel.text = objectInfo.owner;
     self.objectGroupLabel.text = objectInfo.group;
-    self.objectAccessLabel.text = [NSString stringWithFormat:@"%ld", objectInfo.accessMode];
+    self.objectModifiedLabel.text = [dataFormat stringFromDate:objectInfo.lastModified];
+    self.objectAccessLabel.text = [self convertPermissionToString:objectInfo.accessMode];
+}
+
+// Converts long value Unix-representation of file permissions to human-readable format
+- (NSString *) convertPermissionToString: (long) permission
+{
+    NSArray *permsArray = [NSArray arrayWithObjects:@"---", @"--x", @"-w-", @"-wx", @"r--", @"r-x", @"rw-", @"rwx", nil];
+    NSMutableString *result = [NSMutableString string];
+    
+    for (int i = 2; i >= 0; i--)
+    {
+        // gets each group containing three bits which represent one of permissions group
+        unsigned long thisPart = (permission >> (i * 3)) & 0x7;
+        [result appendString:[permsArray objectAtIndex:thisPart]];
+    }
+    
+    return (result);
 }
 
 - (void)viewDidLoad {
