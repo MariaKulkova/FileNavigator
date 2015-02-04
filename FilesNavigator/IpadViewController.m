@@ -72,8 +72,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.objectsTableView addSubview:[self.navigationController view]];
-    [self calculateObjectFrame:[self receiveFrameForOrientation:self.interfaceOrientation]];
     //[self calculateObjectFrame:[self receiveFrameForOrientation:self.interfaceOrientation]];
+    
     
     //Long tap
     //-------------------------------------------------------------------------------------------------------------
@@ -96,7 +96,6 @@
 
 - (void) viewDidLayoutSubviews{
     [super viewDidLayoutSubviews];
-    //[self calculateObjectFrame:[[UIScreen mainScreen] bounds]];
     [self calculateObjectFrame:[self receiveFrameForOrientation:self.interfaceOrientation]];
 }
 
@@ -114,18 +113,10 @@
         [self.objectInfoController.view setFrame:CGRectMake(0, 0, self.detailedPanelView.frame.size.width, self.detailedPanelView.frame.size.height)];
     }
     else{
-        [self.view setFrame:frame];
         [self.detailedPanelView setFrame:CGRectMake(0, 0, 0, 0)];
         [self.objectsTableView setFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
         [self.navigationController.view setFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
     }
-//    ObjectsTableViewController *table = (ObjectsTableViewController*)self.navigationController.topViewController;
-//    [table.tableView setFrame:CGRectMake(0, 0, self.objectsTableView.frame.size.width, self.objectsTableView.frame.size.height)];
-}
-
-- (void) updateViewConstraints{
-    [super updateViewConstraints];
-    [self.objectsTableView updateConstraints];
 }
 
 @end

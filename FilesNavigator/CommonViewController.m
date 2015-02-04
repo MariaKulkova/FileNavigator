@@ -32,10 +32,10 @@
 
 #pragma mark - Rotation for iOS 8.0
 
-- (void) calculateObjectFrame: (CGRect) frame{
-    
-}
-
+//- (void) calculateObjectFrame: (CGRect) frame{
+//    
+//}
+//
 //- (BOOL) shouldAutorotate{
 //    return YES;
 //}
@@ -63,7 +63,7 @@
 //        
 //        // Code here will execute after the rotation has finished.
 //        // Equivalent to placing it in the deprecated method -[didRotateFromInterfaceOrientation:]
-//        //[self calculateObjectFrame:[[UIScreen mainScreen] bounds]];
+//        [self calculateObjectFrame:[[UIScreen mainScreen] bounds]];
 //    }];
 //}
 
