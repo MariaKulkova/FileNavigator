@@ -10,7 +10,7 @@
 #import "ObjectInfoViewController.h"
 #import "FileSystemNavigationController.h"
 
-@interface IpadViewController : CommonViewController
+@interface IpadViewController : CommonViewController <ObjectsTableDelegate>
 {
     BOOL isDetailedPanelVisible;
 }

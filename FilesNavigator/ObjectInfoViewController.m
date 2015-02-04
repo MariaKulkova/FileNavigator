@@ -20,7 +20,8 @@
         [self.calculationSpinner startAnimating];
     }
     else{
-        self.objectSizeLabel.text = [NSString stringWithFormat:@"%f", objectInfo.capacity];
+        [self.calculationSpinner stopAnimating];
+        self.objectSizeLabel.text = [NSByteCountFormatter stringFromByteCount:objectInfo.capacity countStyle:NSByteCountFormatterCountStyleBinary];
     }
     self.objectOwnerLabel.text = objectInfo.owner;
     self.objectGroupLabel.text = objectInfo.group;

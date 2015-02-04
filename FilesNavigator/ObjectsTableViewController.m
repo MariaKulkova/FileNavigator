@@ -206,6 +206,7 @@
             // it has already recalculated
             cell.fileSizeLabel.text = [NSByteCountFormatter stringFromByteCount:fileListItem.capacity countStyle:NSByteCountFormatterCountStyleBinary];
             [cell.sizeCalculationSpinner stopAnimating];
+            [self.delegate processCompleted:indexPath.row];
         }
     }
     else{
@@ -227,6 +228,7 @@
     if ([fileListItem.fileType isEqualToString:NSFileTypeDirectory] || [fileListItem.fileType isEqualToString:NSFileTypeSymbolicLink]) {
         ObjectsTableViewController *directoryContentViewController = [[ObjectsTableViewController alloc]
                                                                 initWithFilePath:[reviewedFilePath stringByAppendingPathComponent:fileListItem.name]];
+        directoryContentViewController.delegate = self.delegate;
         
         if (directoryContentViewController == nil) {
             UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Can't open file"

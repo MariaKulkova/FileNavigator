@@ -25,6 +25,7 @@
         
         // This duplicate parent initialization. TODO: make parameters initialization as a not-init method
         ObjectsTableViewController *rootTableController = [[ObjectsTableViewController alloc] initWithFilePath:@"/"];
+        rootTableController.delegate = self;
         self.navigationController = [[FileSystemNavigationController alloc] initWithRootViewController:rootTableController];
         
         self.objectInfoController = [[ObjectInfoViewController alloc] init];
@@ -38,13 +39,9 @@
     
     if (([recognizer state] == UIGestureRecognizerStateEnded) || ([recognizer state] == UIGestureRecognizerStateCancelled)) {
         if (recognizer.direction == UISwipeGestureRecognizerDirectionRight) {
-            [UIView animateWithDuration:1 animations:^{
-                self.detailedPanelView.hidden = YES;
-            }];
             isDetailedPanelVisible = NO;
             [self.detailedPanelView.subviews makeObjectsPerformSelector: @selector(removeFromSuperview)];
-            [self calculateObjectFrame:[[UIScreen mainScreen] bounds]];
-            //[self.objectInfoController representObjectInfo:[table.filesList objectAtIndex:index.row]];
+            [self calculateObjectFrame:[self receiveFrameForOrientation:self.interfaceOrientation]];
         }
     }
 }
@@ -65,7 +62,7 @@
         cell.highlighted = YES;
         [self.detailedPanelView addSubview:self.objectInfoController.view];
         [self.objectInfoController representObjectInfo:[table.filesList objectAtIndex:index.row]];
-        [self calculateObjectFrame:[[UIScreen mainScreen] bounds]];
+        [self calculateObjectFrame:[self receiveFrameForOrientation:self.interfaceOrientation]];
     }
 }
 
@@ -117,6 +114,11 @@
         [self.objectsTableView setFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
         [self.navigationController.view setFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
     }
+}
+
+- (void) processCompleted:(int)index{
+    ObjectsTableViewController *table = (ObjectsTableViewController*)self.navigationController.topViewController;
+    [self.objectInfoController representObjectInfo:[table.filesList objectAtIndex:index]];
 }
 
 @end
