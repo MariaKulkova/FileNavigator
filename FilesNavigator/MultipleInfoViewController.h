@@ -8,6 +8,19 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MultipleInfoViewController : UIViewController
+@interface MultipleInfoViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+{
+    NSArray *filesList;
+}
+
+@property (weak, nonatomic) IBOutlet UIImageView *objectsImage;
+
+@property (weak, nonatomic) IBOutlet UILabel *totalSizeLable;
+
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *calculationSpinner;
+
+@property (weak, nonatomic) IBOutlet UITableView *objectsTableView;
+
+- (void) representObjectsInfo: (NSArray*) objects;
 
 @end

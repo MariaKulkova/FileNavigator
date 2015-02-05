@@ -193,11 +193,11 @@
 }
 
 - (void) updateDetailPanel{
+    ObjectsTableViewController *table = (ObjectsTableViewController*)self.navigationController.topViewController;
     if (selectedItems.count == 1) {
         [self.multipleInfoController.view removeFromSuperview];
         [self.detailedPanelView addSubview:self.objectInfoController.view];
         
-        ObjectsTableViewController *table = (ObjectsTableViewController*)self.navigationController.topViewController;
         NSIndexPath *index = selectedItems[0];
         FileSystemItemInfo *item = [table.filesList objectAtIndex:index.row];
         NSLog(@"%f", item.capacity);
@@ -207,8 +207,12 @@
         // Add multiple detailed panel to controllers view
         [self.objectInfoController.view removeFromSuperview];
         [self.detailedPanelView addSubview:self.multipleInfoController.view];
-        //[self.multipleInfoController representObjectInfo:[table.filesList objectAtIndex:index.row]];
-        //[self calculateObjectFrame:[self receiveFrameForOrientation:self.interfaceOrientation]];
+        [self.multipleInfoController.view setFrame:self.objectInfoController.view.frame];
+        NSMutableArray *selectedObjects = [[NSMutableArray alloc] init];
+        for (NSIndexPath *index in selectedItems){
+            [selectedObjects addObject:[table.filesList objectAtIndex:index.row]];
+        }
+        [self.multipleInfoController representObjectsInfo:[NSArray arrayWithArray:selectedObjects]];
     }
 }
 
