@@ -25,5 +25,11 @@
 /// Indicates size calculation process
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *sizeCalculationSpinner;
 
+@property (weak, nonatomic) IBOutlet UIImageView *rowSelectedIndicator;
+
+- (void) setSelectedForDetailedInfo;
+
+- (void) deselectFromDetailInfo;
+
 @end
 

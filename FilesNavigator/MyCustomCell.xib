@@ -36,17 +36,27 @@
                             <constraint firstAttribute="width" constant="30" id="hIB-Xj-ueM"/>
                         </constraints>
                     </imageView>
+                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Check.png" translatesAutoresizingMaskIntoConstraints="NO" id="pFa-6s-i5D" userLabel="checkImage">
+                        <rect key="frame" x="8" y="7" width="30" height="30"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="30" id="JTd-jL-6s1"/>
+                            <constraint firstAttribute="height" constant="30" id="g8n-0e-GP1"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="centerY" secondItem="uR4-EU-UAO" secondAttribute="centerY" id="3wD-82-Zeo"/>
                     <constraint firstAttribute="centerY" secondItem="HBu-dn-ARl" secondAttribute="centerY" constant="-1" id="6gD-Ul-X8v"/>
                     <constraint firstItem="4xE-sl-wha" firstAttribute="trailing" secondItem="b7b-4A-ESh" secondAttribute="trailingMargin" id="FDO-i8-GAX"/>
+                    <constraint firstItem="pFa-6s-i5D" firstAttribute="leading" secondItem="b7b-4A-ESh" secondAttribute="leadingMargin" id="J9T-6P-gsm"/>
                     <constraint firstAttribute="centerY" secondItem="4xE-sl-wha" secondAttribute="centerY" id="O3z-Yg-4od"/>
                     <constraint firstItem="4xE-sl-wha" firstAttribute="leading" secondItem="jaM-Lu-IuK" secondAttribute="trailing" constant="8" symbolic="YES" id="RpA-u1-vSF"/>
                     <constraint firstItem="uR4-EU-UAO" firstAttribute="leading" secondItem="b7b-4A-ESh" secondAttribute="leadingMargin" id="bCl-sM-mhz"/>
                     <constraint firstAttribute="centerY" secondItem="jaM-Lu-IuK" secondAttribute="centerY" id="dIo-II-cIU"/>
+                    <constraint firstItem="jaM-Lu-IuK" firstAttribute="leading" secondItem="pFa-6s-i5D" secondAttribute="trailing" constant="10" id="fYu-s8-7Kk"/>
                     <constraint firstItem="jaM-Lu-IuK" firstAttribute="leading" secondItem="uR4-EU-UAO" secondAttribute="trailing" constant="10" id="hxB-sC-ziE"/>
                     <constraint firstItem="HBu-dn-ARl" firstAttribute="leading" secondItem="jaM-Lu-IuK" secondAttribute="trailing" constant="8" symbolic="YES" id="rBh-sE-D7j"/>
+                    <constraint firstAttribute="centerY" secondItem="pFa-6s-i5D" secondAttribute="centerY" id="rbS-KT-BzW"/>
                     <constraint firstItem="HBu-dn-ARl" firstAttribute="trailing" secondItem="b7b-4A-ESh" secondAttribute="trailingMargin" id="zo8-Rr-3Ft"/>
                 </constraints>
             </tableViewCellContentView>
@@ -57,9 +67,13 @@
                 <outlet property="fileNameLabel" destination="jaM-Lu-IuK" id="gha-6t-KTA"/>
                 <outlet property="fileSizeLabel" destination="HBu-dn-ARl" id="L27-bH-tkx"/>
                 <outlet property="fileTypeImage" destination="uR4-EU-UAO" id="nBM-cu-ajP"/>
+                <outlet property="rowSelectedIndicator" destination="pFa-6s-i5D" id="KvL-G4-1Z3"/>
                 <outlet property="sizeCalculationSpinner" destination="4xE-sl-wha" id="HDb-Xg-xZr"/>
             </connections>
             <point key="canvasLocation" x="434" y="503"/>
         </tableViewCell>
     </objects>
+    <resources>
+        <image name="Check.png" width="25" height="23"/>
+    </resources>
 </document>

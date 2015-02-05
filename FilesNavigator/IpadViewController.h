@@ -9,6 +9,7 @@
 #import "CommonViewController.h"
 #import "ObjectInfoViewController.h"
 #import "FileSystemNavigationController.h"
+#import "MultipleInfoViewController.h"
 
 @interface IpadViewController : CommonViewController <UIGestureRecognizerDelegate>
 {
@@ -18,6 +19,8 @@
 }
 
 @property (strong, nonatomic) ObjectInfoViewController *objectInfoController;
+
+@property (strong, nonatomic) MultipleInfoViewController *multipleInfoController;
 
 @property (weak, nonatomic) IBOutlet UIView *objectsTableView;
 

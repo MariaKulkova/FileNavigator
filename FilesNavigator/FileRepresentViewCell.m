@@ -29,4 +29,16 @@
     
     // Configure the view for the selected state
 }
+
+- (void) setSelectedForDetailedInfo{
+    self.backgroundColor = [UIColor grayColor];
+    self.rowSelectedIndicator.hidden = NO;
+}
+
+- (void) deselectFromDetailInfo{
+    // gjcn
+    self.backgroundColor = [UIColor whiteColor];
+    self.rowSelectedIndicator.hidden = YES;
+}
+
 @end

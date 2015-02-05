@@ -44,12 +44,15 @@
  @param filePath represents path to file system object which content must be shown
  @return new instance of controller
  */
--(id) initWithFilePath: (NSString*) filePath;
+- (id) initWithFilePath: (NSString*) filePath;
 
 /**
  Interrupts any asynchronous calculation processes by setting special interruption flag
  */
--(void) cancelCalculations;
+- (void) cancelCalculations;
 
+- (void) selectCellAtIndex: (NSIndexPath*) indexPath;
+
+- (void) deselectCellAtIndex: (NSIndexPath*) indexPath;
 
 @end

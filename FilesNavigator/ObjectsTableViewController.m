@@ -120,17 +120,7 @@
                     
                     @try {
                         if (weakSelf.tableView != nil) {
-                            
-                            dispatch_semaphore_wait(cancelledCalculationsSemaphor, DISPATCH_TIME_FOREVER);
-                            if (!cancelledSizeCalculation) {
-                                NSString *notificationName = @"SizeCalculationFinishedNotificator";
-                                NSString *key = @"Index";
-                                NSDictionary *dictionary = [NSDictionary dictionaryWithObject:[NSIndexPath indexPathForRow:i inSection:0] forKey:key];
-                                [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil userInfo:dictionary];
-                            }
-                            dispatch_semaphore_signal(cancelledCalculationsSemaphor);
-                            
-                            
+                
                             NSArray *indexes = [weakSelf.tableView indexPathsForVisibleRows];
                             for (NSIndexPath *index in indexes) {
                                 if (index.row == i) {
@@ -166,6 +156,12 @@
 
                 });
                 //----------------------------------------------------------------------------------------
+                dispatch_sync(dispatch_get_main_queue(), ^{
+                    NSString *notificationName = @"SizeCalculationFinishedNotificator";
+                    NSString *key = @"Index";
+                    NSDictionary *dictionary = [NSDictionary dictionaryWithObject:[NSIndexPath indexPathForRow:i inSection:0] forKey:key];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil userInfo:dictionary];
+                });
             }
         }
     });
@@ -191,14 +187,15 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
     static NSString* cellIdentifier = @"reuseCell";
-    FileRepresentViewCell *cell = [tableView dequeueReusableHeaderFooterViewWithIdentifier:cellIdentifier];
+    //FileRepresentViewCell *cell = [tableView dequeueReusableHeaderFooterViewWithIdentifier:cellIdentifier];
+    FileRepresentViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     
     // Links sell with .xib file representing cell
-    if (!cell)
-    {
-        [tableView registerNib:[UINib nibWithNibName:@"MyCustomCell" bundle:nil] forCellReuseIdentifier:cellIdentifier];
-        cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    }
+//    if (!cell)
+//    {
+////        [tableView registerNib:[UINib nibWithNibName:@"MyCustomCell" bundle:nil] forCellReuseIdentifier:cellIdentifier];
+////        cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+//    }
     
     FileSystemItemInfo *fileListItem = [self.filesList objectAtIndex:indexPath.row];
     
@@ -229,7 +226,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    [[tableView cellForRowAtIndexPath:indexPath] setSelected:NO animated:YES];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     FileSystemItemInfo *fileListItem = [self.filesList objectAtIndex:indexPath.row];
     
     // Initializes new controller with path of file which has been just selected
@@ -276,6 +273,7 @@
     }
 }
 
+
 #pragma mark - UIDocumentInteractionController delegate
 
 - (UIViewController *) documentInteractionControllerViewControllerForPreview: (UIDocumentInteractionController *) controller {
@@ -316,6 +314,16 @@
         image = [UIImage imageNamed:@"File.png"];
     }
     return image;
+}
+
+- (void) selectCellAtIndex:(NSIndexPath *)indexPath{
+    FileRepresentViewCell *cell = (FileRepresentViewCell*)[self.tableView cellForRowAtIndexPath:indexPath];
+    [cell setSelectedForDetailedInfo];
+}
+
+- (void) deselectCellAtIndex:(NSIndexPath *)indexPath{
+    FileRepresentViewCell *cell = (FileRepresentViewCell*)[self.tableView cellForRowAtIndexPath:indexPath];
+    [cell deselectFromDetailInfo];
 }
 
 /*

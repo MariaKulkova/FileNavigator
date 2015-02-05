@@ -30,11 +30,14 @@
 }
 
 - (void) representObjectInfo:(FileSystemItemInfo *)objectInfo{
+    
     self.objectNameLabel.text = objectInfo.name;
     if (objectInfo.capacity == -1){
         [self.calculationSpinner startAnimating];
+        self.objectSizeLabel.text = @"";
     }
     else{
+        NSLog(@"%f", objectInfo.capacity);
         [self.calculationSpinner stopAnimating];
         self.objectSizeLabel.text = [NSByteCountFormatter stringFromByteCount:objectInfo.capacity countStyle:NSByteCountFormatterCountStyleBinary];
     }
@@ -69,9 +72,6 @@
 
 - (void) viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-    CGRect frame = self.calculationSpinner.frame;
-    frame.origin = self.objectSizeLabel.frame.origin;
-    [self.calculationSpinner setFrame:frame];
 }
 
 - (void)didReceiveMemoryWarning {

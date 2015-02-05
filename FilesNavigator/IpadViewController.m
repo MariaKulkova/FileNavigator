@@ -30,13 +30,11 @@
         isDetailedPanelVisible = NO;
         selectedItems = [[NSMutableArray alloc] init];
         self.objectInfoController = [[ObjectInfoViewController alloc] init];
-        
-        // set delegate for tableView controller
-        //ObjectsTableViewController *rootController = self.navigationController.viewControllers[0];
+        self.multipleInfoController = [[MultipleInfoViewController alloc] init];
         
         [[NSNotificationCenter defaultCenter]
          addObserver:self
-         selector:@selector(updateDetailPanel:)
+         selector:@selector(analyzeSizeUpdate:)
          name:@"SizeCalculationFinishedNotificator"
          object:nil];
     }
@@ -87,12 +85,13 @@
             self.singleTapRecognizer.enabled = NO;
             self.longTapRecognizer.enabled = YES;
             self.swipeRecognizer.enabled = NO;
+            self.navigationController.topViewController.navigationItem.hidesBackButton = NO;
+            
             ObjectsTableViewController *table = (ObjectsTableViewController*)self.navigationController.topViewController;
             table.tableView.allowsSelection = YES;
             self.navigationController.navigationItem.backBarButtonItem.enabled = YES;
             for (NSIndexPath *index in selectedItems) {
-                FileRepresentViewCell *cell = (FileRepresentViewCell*)[table.tableView cellForRowAtIndexPath:index];
-                cell.highlighted = NO;
+                [table deselectCellAtIndex:index];
             }
             [selectedItems removeAllObjects];
         }
@@ -110,17 +109,16 @@
         
         // Receive selected cell index
         NSIndexPath *index = [table.tableView indexPathForRowAtPoint:location];
-        FileRepresentViewCell *cell = (FileRepresentViewCell*)[table.tableView cellForRowAtIndexPath:index];
-        cell.highlighted = YES;
-        isDetailedPanelVisible = YES;
+        [table selectCellAtIndex:index];
         [selectedItems addObject:index];
         
         // Add detailed panel to controllers view
+        isDetailedPanelVisible = YES;
         [self.detailedPanelView addSubview:self.objectInfoController.view];
         [self.objectInfoController representObjectInfo:[table.filesList objectAtIndex:index.row]];
         [self calculateObjectFrame:[self receiveFrameForOrientation:self.interfaceOrientation]];
-        self.navigationController.navigationItem.backBarButtonItem.enabled = NO;
         
+        self.navigationController.topViewController.navigationItem.hidesBackButton = YES;
         table.tableView.allowsSelection = NO;
         self.longTapRecognizer.enabled = NO;
         self.singleTapRecognizer.enabled = YES;
@@ -141,24 +139,25 @@
     
     if (cell != nil) {
         if ([selectedItems containsObject:index]) {
-            cell.highlighted = NO;
+            [table deselectCellAtIndex:index];
             [selectedItems removeObject:index];
         }
         else{
+            [table selectCellAtIndex:index];
             [selectedItems addObject:index];
-            cell.highlighted = YES;
         }
+        [self updateDetailPanel];
     }
 }
 
-// Implement the UIGestureRecognizerDelegate method
--(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
-    
-    if ([touch view] == self.objectInfoController.view) {
-        return NO;
-    }
-    return YES;
-}
+//// Implement the UIGestureRecognizerDelegate method
+//-(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+//    
+//    if ([touch view] == self.objectInfoController.view) {
+//        return NO;
+//    }
+//    return YES;
+//}
 
 - (void) viewDidLayoutSubviews{
     [super viewDidLayoutSubviews];
@@ -185,17 +184,31 @@
     }
 }
 
-- (void) updateDetailPanel: (NSNotification*) notification{
+- (void) analyzeSizeUpdate: (NSNotification*) notification{
     NSDictionary *dictionary = [notification userInfo];
     NSIndexPath *index = [dictionary valueForKey:@"Index"];
     if ([selectedItems containsObject:index]){
-        if (selectedItems.count == 1) {
-            ObjectsTableViewController *table = (ObjectsTableViewController*)self.navigationController.topViewController;
-            [self.objectInfoController representObjectInfo:[table.filesList objectAtIndex:index.row]];
-        }
-        else{
-            
-        }
+        [self updateDetailPanel];
+    }
+}
+
+- (void) updateDetailPanel{
+    if (selectedItems.count == 1) {
+        [self.multipleInfoController.view removeFromSuperview];
+        [self.detailedPanelView addSubview:self.objectInfoController.view];
+        
+        ObjectsTableViewController *table = (ObjectsTableViewController*)self.navigationController.topViewController;
+        NSIndexPath *index = selectedItems[0];
+        FileSystemItemInfo *item = [table.filesList objectAtIndex:index.row];
+        NSLog(@"%f", item.capacity);
+        [self.objectInfoController representObjectInfo:item];
+    }
+    else{
+        // Add multiple detailed panel to controllers view
+        [self.objectInfoController.view removeFromSuperview];
+        [self.detailedPanelView addSubview:self.multipleInfoController.view];
+        //[self.multipleInfoController representObjectInfo:[table.filesList objectAtIndex:index.row]];
+        //[self calculateObjectFrame:[self receiveFrameForOrientation:self.interfaceOrientation]];
     }
 }
 

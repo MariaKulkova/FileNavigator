@@ -26,7 +26,7 @@
         self.window.rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"iPhoneController"];
     }
     else{
-        
+    
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iPadStoryboard" bundle:nil];
         self.window.rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"iPadController"];
     }
