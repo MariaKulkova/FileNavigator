@@ -50,7 +50,7 @@
                     <constraint firstItem="4xE-sl-wha" firstAttribute="trailing" secondItem="b7b-4A-ESh" secondAttribute="trailingMargin" id="FDO-i8-GAX"/>
                     <constraint firstItem="pFa-6s-i5D" firstAttribute="leading" secondItem="b7b-4A-ESh" secondAttribute="leadingMargin" id="J9T-6P-gsm"/>
                     <constraint firstAttribute="centerY" secondItem="4xE-sl-wha" secondAttribute="centerY" id="O3z-Yg-4od"/>
-                    <constraint firstItem="4xE-sl-wha" firstAttribute="leading" secondItem="jaM-Lu-IuK" secondAttribute="trailing" constant="200" id="RpA-u1-vSF"/>
+                    <constraint firstItem="4xE-sl-wha" firstAttribute="leading" secondItem="jaM-Lu-IuK" secondAttribute="trailing" constant="8" symbolic="YES" id="RpA-u1-vSF"/>
                     <constraint firstItem="uR4-EU-UAO" firstAttribute="leading" secondItem="b7b-4A-ESh" secondAttribute="leadingMargin" id="bCl-sM-mhz"/>
                     <constraint firstAttribute="centerY" secondItem="jaM-Lu-IuK" secondAttribute="centerY" id="dIo-II-cIU"/>
                     <constraint firstItem="jaM-Lu-IuK" firstAttribute="leading" secondItem="pFa-6s-i5D" secondAttribute="trailing" constant="10" id="fYu-s8-7Kk"/>

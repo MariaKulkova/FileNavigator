@@ -87,10 +87,11 @@
     NSMutableArray *tempFilesList = [[filesList sortedArrayUsingSelector:@selector(compare:)] mutableCopy];
     UIImage* image;
     
+    // Determines files group type and sets right icon in it representation
+    // In dorted list directories goes before files. It means that if the first and the last objects are directories there are no files in list.
+    // If the first object is regular file there are no directories in list
     FileSystemItemInfo *firstObject = tempFilesList.firstObject;
     FileSystemItemInfo *lastObject = tempFilesList.lastObject;
-    
-    // Determines file type and sets right icon in it representation
     if ([firstObject.fileType isEqualToString:NSFileTypeDirectory] || [firstObject.fileType isEqualToString:NSFileTypeSymbolicLink]){
         if ([lastObject.fileType isEqualToString:NSFileTypeDirectory] || [lastObject.fileType isEqualToString:NSFileTypeSymbolicLink]){
             // Many directories

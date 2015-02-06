@@ -30,12 +30,20 @@
 /// Indicates size calculation process
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *sizeCalculationSpinner;
 
+/// Image that represents selected state of the current cell
 @property (weak, nonatomic) IBOutlet UIImageView *rowSelectedIndicator;
 
+// Determines selected state
 @property (nonatomic, readonly) BOOL isSelected;
 
+/**
+ Makes cell apperance to correspond to selected state
+ */
 - (void) setSelectedForDetailedInfo;
 
+/**
+ Makes cell appearance to correspond to default state, with no selection
+ */
 - (void) deselectFromDetailInfo;
 
 @end

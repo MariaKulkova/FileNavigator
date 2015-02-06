@@ -25,4 +25,13 @@
     [self.view addSubview:[self.navigationController view]];
 }
 
+- (void) viewDidLayoutSubviews{
+    [super viewDidLayoutSubviews];
+    [self calculateObjectFrame:[self receiveFrameForOrientation:self.interfaceOrientation]];
+}
+
+- (void) calculateObjectFrame: (CGRect) frame{
+    [self.navigationController.view setFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+}
+
 @end

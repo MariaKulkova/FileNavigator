@@ -30,6 +30,7 @@
     // Configure the view for the selected state
 }
 
+// Makes cell apperance to correspond to selected state
 - (void) setSelectedForDetailedInfo{
     _isSelected = YES;
     defaultColor = [self.backgroundColor copy];
@@ -37,6 +38,7 @@
     self.rowSelectedIndicator.hidden = NO;
 }
 
+// Makes cell appearance to correspond to default state, with no selection
 - (void) deselectFromDetailInfo{
     _isSelected = NO;
     self.backgroundColor = nil;

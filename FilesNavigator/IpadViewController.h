@@ -13,15 +13,20 @@
 
 @interface IpadViewController : CommonViewController <UIGestureRecognizerDelegate>
 {
+    // flag that shows whether detailed panel is visible or not
     BOOL isDetailedPanelVisible;
 }
 
+/// View controller for single object detailed information representation
 @property (strong, nonatomic) ObjectInfoViewController *objectInfoController;
 
+/// View controller for group object detailed information representation
 @property (strong, nonatomic) MultipleInfoViewController *multipleInfoController;
 
+/// Represents view for navigation controller storage
 @property (weak, nonatomic) IBOutlet UIView *objectsTableView;
 
+/// Represents view for detailed information controllers storage
 @property (weak, nonatomic) IBOutlet UIView *detailedPanelView;
 
 @end

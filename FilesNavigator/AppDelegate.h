@@ -14,8 +14,5 @@
 /// represents object that manages and coordinates the views an app displays on a device screen
 @property (strong, nonatomic) UIWindow *window;
 
-/// controller which provides navigation among controllers representing directory content
-@property (strong, nonatomic) FileSystemNavigationController *navigationController;
-
 @end
 

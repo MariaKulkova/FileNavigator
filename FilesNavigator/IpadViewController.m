@@ -189,18 +189,22 @@
 - (void) updateDetailPanel{
     ObjectsTableViewController *table = (ObjectsTableViewController*)self.navigationController.topViewController;
     if (table.selectedRows.count == 1) {
+        // Add single detailed panel to controllers view
         [self.detailedPanelView.subviews makeObjectsPerformSelector: @selector(removeFromSuperview)];
         [self.detailedPanelView addSubview:self.objectInfoController.view];
+        [self.objectInfoController.view setFrame:self.objectInfoController.view.frame];
         
+        // Update information in detailed panel
         NSIndexPath *index = table.selectedRows[0];
-        FileSystemItemInfo *item = [table.filesList objectAtIndex:index.row];
-        [self.objectInfoController representObjectInfo:item];
+        [self.objectInfoController representObjectInfo:[table.filesList objectAtIndex:index.row]];
     }
     else if (table.selectedRows.count > 1){
         // Add multiple detailed panel to controllers view
         [self.detailedPanelView.subviews makeObjectsPerformSelector: @selector(removeFromSuperview)];
         [self.detailedPanelView addSubview:self.multipleInfoController.view];
         [self.multipleInfoController.view setFrame:self.objectInfoController.view.frame];
+        
+        // Update information in detailed panel
         NSMutableArray *selectedObjects = [[NSMutableArray alloc] init];
         for (NSIndexPath *index in table.selectedRows){
             [selectedObjects addObject:[table.filesList objectAtIndex:index.row]];
@@ -208,6 +212,7 @@
         [self.multipleInfoController representObjectsInfo:[NSArray arrayWithArray:selectedObjects]];
     }
     else{
+        // If there are no selectes cells in table
         [self.detailedPanelView.subviews makeObjectsPerformSelector: @selector(removeFromSuperview)];
         NSArray *subviewArray = [[NSBundle mainBundle] loadNibNamed:@"EmptySelectionView" owner:self options:nil];
         UIView *emptySelectionView = [subviewArray objectAtIndex:0];

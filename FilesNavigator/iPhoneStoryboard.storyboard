@@ -11,7 +11,7 @@
                 <viewController storyboardIdentifier="iPhoneController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="JSa-L6-1b5" customClass="IphoneViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="TwP-tS-eHT">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                 </viewController>
