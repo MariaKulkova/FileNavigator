@@ -16,8 +16,14 @@
 		4CC5D85C1A792940006D8964 /* ObjectInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4CC5D85A1A792940006D8964 /* ObjectInfoViewController.xib */; };
 		4CC5EA241A7A661A00F904B7 /* CommonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CC5EA231A7A661A00F904B7 /* CommonViewController.m */; };
 		4CC82DFC1A71417300E98F97 /* FileSystemNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CC82DFB1A71417300E98F97 /* FileSystemNavigationController.m */; };
-		4CC837C61A6D313900542A89 /* File.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CC837C41A6D313900542A89 /* File.png */; };
-		4CC837C81A6D317D00542A89 /* Folder.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CC837C71A6D317D00542A89 /* Folder.png */; };
+		4CCA72191A84E78400F29175 /* file_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CCA72181A84E78400F29175 /* file_small.png */; };
+		4CCA721B1A84E78A00F29175 /* folder_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CCA721A1A84E78A00F29175 /* folder_small.png */; };
+		4CCA721E1A84E84A00F29175 /* file_big.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CCA721C1A84E84A00F29175 /* file_big.png */; };
+		4CCA721F1A84E84A00F29175 /* folder_big.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CCA721D1A84E84A00F29175 /* folder_big.png */; };
+		4CCA72231A84ED7400F29175 /* file_and_folder_big.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CCA72201A84ED7400F29175 /* file_and_folder_big.png */; };
+		4CCA72241A84ED7400F29175 /* files_big.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CCA72211A84ED7400F29175 /* files_big.png */; };
+		4CCA72251A84ED7400F29175 /* folders_big.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CCA72221A84ED7400F29175 /* folders_big.png */; };
+		4CCA72271A84FE5C00F29175 /* EmptySelectionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4CCA72261A84FE5C00F29175 /* EmptySelectionView.xib */; };
 		4CCB32C21A7FB53F00015E7B /* ObjectsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CCB32C11A7FB53F00015E7B /* ObjectsTableViewController.m */; };
 		4CCC13871A68E98F00D9D639 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CCC13861A68E98F00D9D639 /* main.m */; };
 		4CCC138A1A68E98F00D9D639 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CCC13891A68E98F00D9D639 /* AppDelegate.m */; };
@@ -56,8 +62,15 @@
 		4CC5EA231A7A661A00F904B7 /* CommonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommonViewController.m; sourceTree = "<group>"; };
 		4CC82DFA1A71417300E98F97 /* FileSystemNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileSystemNavigationController.h; sourceTree = "<group>"; };
 		4CC82DFB1A71417300E98F97 /* FileSystemNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileSystemNavigationController.m; sourceTree = "<group>"; };
-		4CC837C41A6D313900542A89 /* File.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = File.png; path = ../../../../Downloads/File.png; sourceTree = "<group>"; };
-		4CC837C71A6D317D00542A89 /* Folder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Folder.png; path = ../../../../Downloads/Folder.png; sourceTree = "<group>"; };
+		4CCA72171A84DDCC00F29175 /* NotificationConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NotificationConstants.h; sourceTree = "<group>"; };
+		4CCA72181A84E78400F29175 /* file_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = file_small.png; sourceTree = "<group>"; };
+		4CCA721A1A84E78A00F29175 /* folder_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = folder_small.png; sourceTree = "<group>"; };
+		4CCA721C1A84E84A00F29175 /* file_big.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = file_big.png; sourceTree = "<group>"; };
+		4CCA721D1A84E84A00F29175 /* folder_big.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = folder_big.png; sourceTree = "<group>"; };
+		4CCA72201A84ED7400F29175 /* file_and_folder_big.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = file_and_folder_big.png; sourceTree = "<group>"; };
+		4CCA72211A84ED7400F29175 /* files_big.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = files_big.png; sourceTree = "<group>"; };
+		4CCA72221A84ED7400F29175 /* folders_big.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = folders_big.png; sourceTree = "<group>"; };
+		4CCA72261A84FE5C00F29175 /* EmptySelectionView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EmptySelectionView.xib; sourceTree = "<group>"; };
 		4CCB32C01A7FB53F00015E7B /* ObjectsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectsTableViewController.h; sourceTree = "<group>"; };
 		4CCB32C11A7FB53F00015E7B /* ObjectsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjectsTableViewController.m; sourceTree = "<group>"; };
 		4CCC13811A68E98F00D9D639 /* FilesNavigator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FilesNavigator.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -104,6 +117,7 @@
 		4CC1DED41A77BA3800748A02 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				4CCA72171A84DDCC00F29175 /* NotificationConstants.h */,
 				4CCC13881A68E98F00D9D639 /* AppDelegate.h */,
 				4CCC13891A68E98F00D9D639 /* AppDelegate.m */,
 				4CC5EA221A7A661A00F904B7 /* CommonViewController.h */,
@@ -120,10 +134,8 @@
 				4CC5D8591A792940006D8964 /* ObjectInfoViewController.m */,
 				4CC328E81A82215100B2D6D5 /* MultipleInfoViewController.h */,
 				4CC328E91A82215100B2D6D5 /* MultipleInfoViewController.m */,
-				4CC837C91A6D3CE200542A89 /* ModelObjects */,
 			);
 			name = Controllers;
-			path = FilesNavigator;
 			sourceTree = "<group>";
 		};
 		4CC837C11A6D2ED100542A89 /* Views */ = {
@@ -131,6 +143,7 @@
 			children = (
 				4CCC13BC1A68FC2E00D9D639 /* FileRepresentViewCell.h */,
 				4CCC13BD1A68FC2E00D9D639 /* FileRepresentViewCell.m */,
+				4CCA72261A84FE5C00F29175 /* EmptySelectionView.xib */,
 				4CCC13931A68E98F00D9D639 /* LaunchScreen.xib */,
 				4C85C5B31A695B54000B4BF7 /* iPhoneStoryboard.storyboard */,
 				4CD0DA251A7BD28A003F2132 /* iPadStoryboard.storyboard */,
@@ -144,9 +157,14 @@
 		4CC837C21A6D2F2900542A89 /* Recources */ = {
 			isa = PBXGroup;
 			children = (
+				4CCA72201A84ED7400F29175 /* file_and_folder_big.png */,
+				4CCA72211A84ED7400F29175 /* files_big.png */,
+				4CCA72221A84ED7400F29175 /* folders_big.png */,
+				4CCA721C1A84E84A00F29175 /* file_big.png */,
+				4CCA721D1A84E84A00F29175 /* folder_big.png */,
+				4CCA721A1A84E78A00F29175 /* folder_small.png */,
+				4CCA72181A84E78400F29175 /* file_small.png */,
 				4CC132C11A83989A0060F3B2 /* Check.png */,
-				4CC837C71A6D317D00542A89 /* Folder.png */,
-				4CC837C41A6D313900542A89 /* File.png */,
 			);
 			name = Recources;
 			sourceTree = "<group>";
@@ -165,7 +183,6 @@
 		4CCC13781A68E98F00D9D639 = {
 			isa = PBXGroup;
 			children = (
-				4CC1DED41A77BA3800748A02 /* Controllers */,
 				4CCC13831A68E98F00D9D639 /* FilesNavigator */,
 				4CCC139D1A68E98F00D9D639 /* FilesNavigatorTests */,
 				4CCC13821A68E98F00D9D639 /* Products */,
@@ -184,6 +201,8 @@
 		4CCC13831A68E98F00D9D639 /* FilesNavigator */ = {
 			isa = PBXGroup;
 			children = (
+				4CC837C91A6D3CE200542A89 /* ModelObjects */,
+				4CC1DED41A77BA3800748A02 /* Controllers */,
 				4CC837C21A6D2F2900542A89 /* Recources */,
 				4CC837C11A6D2ED100542A89 /* Views */,
 				4CCC13911A68E98F00D9D639 /* Images.xcassets */,
@@ -298,12 +317,18 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4CCA72231A84ED7400F29175 /* file_and_folder_big.png in Resources */,
+				4CCA721E1A84E84A00F29175 /* file_big.png in Resources */,
 				4C85C5B41A695B54000B4BF7 /* iPhoneStoryboard.storyboard in Resources */,
 				4CCC13951A68E98F00D9D639 /* LaunchScreen.xib in Resources */,
+				4CCA72241A84ED7400F29175 /* files_big.png in Resources */,
 				4CC328EC1A82215100B2D6D5 /* MultipleInfoViewController.xib in Resources */,
+				4CCA72191A84E78400F29175 /* file_small.png in Resources */,
+				4CCA72271A84FE5C00F29175 /* EmptySelectionView.xib in Resources */,
 				4CC5D85C1A792940006D8964 /* ObjectInfoViewController.xib in Resources */,
-				4CC837C61A6D313900542A89 /* File.png in Resources */,
-				4CC837C81A6D317D00542A89 /* Folder.png in Resources */,
+				4CCA721F1A84E84A00F29175 /* folder_big.png in Resources */,
+				4CCA72251A84ED7400F29175 /* folders_big.png in Resources */,
+				4CCA721B1A84E78A00F29175 /* folder_small.png in Resources */,
 				4CC132C21A83989A0060F3B2 /* Check.png in Resources */,
 				4CCC13921A68E98F00D9D639 /* Images.xcassets in Resources */,
 				4C85C5B21A69546D000B4BF7 /* MyCustomCell.xib in Resources */,

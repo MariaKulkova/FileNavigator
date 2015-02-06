@@ -16,7 +16,7 @@
                             <view contentMode="scaleToFill" id="zwl-T8-DhX">
                                 <rect key="frame" x="0.0" y="0.0" width="402" height="1024"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="s9z-EC-9eg">
                                 <rect key="frame" x="410" y="0.0" width="358" height="1024"/>

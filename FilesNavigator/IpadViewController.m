@@ -10,6 +10,7 @@
 #import "FileRepresentViewCell.h"
 #import "FileSystemItemInfo.h"
 #import "ObjectsTableViewController.h"
+#import "NotificationConstants.h"
 
 @interface IpadViewController ()
 
@@ -28,14 +29,14 @@
     if (self = [super initWithCoder:aDecoder]) {
     
         isDetailedPanelVisible = NO;
-        selectedItems = [[NSMutableArray alloc] init];
         self.objectInfoController = [[ObjectInfoViewController alloc] init];
         self.multipleInfoController = [[MultipleInfoViewController alloc] init];
         
+        // Subscribe to event of size calculation finish
         [[NSNotificationCenter defaultCenter]
          addObserver:self
          selector:@selector(analyzeSizeUpdate:)
-         name:@"SizeCalculationFinishedNotificator"
+         name:FINISH_CALCULATION_NOTIFICATION
          object:nil];
     }
     return self;
@@ -44,11 +45,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.objectsTableView addSubview:[self.navigationController view]];
+    // Long tap has higher priority than single tap
+    [self.singleTapRecognizer requireGestureRecognizerToFail:self.longTapRecognizer];
     
     //Long tap
     //-------------------------------------------------------------------------------------------------------------
     self.longTapRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(showDetailsPanelForLongTapRecognizer:)];
-    self.longTapRecognizer.minimumPressDuration = 1.0;
+    self.longTapRecognizer.minimumPressDuration = 0.5;
     self.longTapRecognizer.delegate = self;
     [self.view addGestureRecognizer:self.longTapRecognizer];
     //-------------------------------------------------------------------------------------------------------------
@@ -73,6 +76,7 @@
     self.singleTapRecognizer.enabled = NO;
 }
 
+// Hide detailed panel by deleting its subviews and recalculating frames of views
 - (IBAction)hideDetailsPanelForSwipe:(UISwipeGestureRecognizer*)recognizer{
     
     if (recognizer.direction == UISwipeGestureRecognizerDirectionRight){
@@ -90,39 +94,39 @@
             ObjectsTableViewController *table = (ObjectsTableViewController*)self.navigationController.topViewController;
             table.tableView.allowsSelection = YES;
             self.navigationController.navigationItem.backBarButtonItem.enabled = YES;
-            for (NSIndexPath *index in selectedItems) {
-                [table deselectCellAtIndex:index];
-            }
-            [selectedItems removeAllObjects];
+            [table clearSelectedRows];
         }
     }
 }
 
 - (IBAction)showDetailsPanelForLongTapRecognizer:(UIRotationGestureRecognizer *)recognizer{
     
-    if (recognizer.state == UIGestureRecognizerStateRecognized){
-        // Get the location of the gesture
-        CGPoint location = [recognizer locationInView:self.objectsTableView];
-        ObjectsTableViewController *table = (ObjectsTableViewController*)self.navigationController.topViewController;
-        location.x += table.tableView.contentOffset.x;
-        location.y += table.tableView.contentOffset.y;
-        
-        // Receive selected cell index
-        NSIndexPath *index = [table.tableView indexPathForRowAtPoint:location];
-        [table selectCellAtIndex:index];
-        [selectedItems addObject:index];
-        
-        // Add detailed panel to controllers view
-        isDetailedPanelVisible = YES;
-        [self.detailedPanelView addSubview:self.objectInfoController.view];
-        [self.objectInfoController representObjectInfo:[table.filesList objectAtIndex:index.row]];
-        [self calculateObjectFrame:[self receiveFrameForOrientation:self.interfaceOrientation]];
-        
-        self.navigationController.topViewController.navigationItem.hidesBackButton = YES;
-        table.tableView.allowsSelection = NO;
-        self.longTapRecognizer.enabled = NO;
-        self.singleTapRecognizer.enabled = YES;
-        self.swipeRecognizer.enabled = YES;
+    // Get the location of the gesture
+    CGPoint location = [recognizer locationInView:self.objectsTableView];
+    ObjectsTableViewController *table = (ObjectsTableViewController*)self.navigationController.topViewController;
+    location.x += table.tableView.contentOffset.x;
+    location.y += table.tableView.contentOffset.y;
+    
+    // Receive selected cell index
+    NSIndexPath *index = [table.tableView indexPathForRowAtPoint:location];
+
+    if (recognizer.state == UIGestureRecognizerStateBegan){
+        if (index != nil){
+            
+            // Add detailed panel to controllers view
+            isDetailedPanelVisible = YES;
+            [self.detailedPanelView addSubview:self.objectInfoController.view];
+            [self.objectInfoController representObjectInfo:[table.filesList objectAtIndex:index.row]];
+            [self calculateObjectFrame:[self receiveFrameForOrientation:self.interfaceOrientation]];
+            
+            [table selectCellAtIndex:index];
+            self.navigationController.topViewController.navigationItem.hidesBackButton = YES;
+            table.tableView.allowsSelection = NO;
+            self.longTapRecognizer.enabled = NO;
+            self.singleTapRecognizer.enabled = YES;
+            self.swipeRecognizer.enabled = YES;
+        }
+
     }
 }
 
@@ -138,26 +142,15 @@
     FileRepresentViewCell *cell = (FileRepresentViewCell*)[table.tableView cellForRowAtIndexPath:index];
     
     if (cell != nil) {
-        if ([selectedItems containsObject:index]) {
+        if ([table.selectedRows containsObject:index]) {
             [table deselectCellAtIndex:index];
-            [selectedItems removeObject:index];
         }
         else{
             [table selectCellAtIndex:index];
-            [selectedItems addObject:index];
         }
         [self updateDetailPanel];
     }
 }
-
-//// Implement the UIGestureRecognizerDelegate method
-//-(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
-//    
-//    if ([touch view] == self.objectInfoController.view) {
-//        return NO;
-//    }
-//    return YES;
-//}
 
 - (void) viewDidLayoutSubviews{
     [super viewDidLayoutSubviews];
@@ -186,33 +179,40 @@
 
 - (void) analyzeSizeUpdate: (NSNotification*) notification{
     NSDictionary *dictionary = [notification userInfo];
-    NSIndexPath *index = [dictionary valueForKey:@"Index"];
-    if ([selectedItems containsObject:index]){
+    ObjectsTableViewController *table = (ObjectsTableViewController*)self.navigationController.topViewController;
+    NSIndexPath *index = [dictionary valueForKey:INDEX_KEY];
+    if ([table.selectedRows containsObject:index]){
         [self updateDetailPanel];
     }
 }
 
 - (void) updateDetailPanel{
     ObjectsTableViewController *table = (ObjectsTableViewController*)self.navigationController.topViewController;
-    if (selectedItems.count == 1) {
-        [self.multipleInfoController.view removeFromSuperview];
+    if (table.selectedRows.count == 1) {
+        [self.detailedPanelView.subviews makeObjectsPerformSelector: @selector(removeFromSuperview)];
         [self.detailedPanelView addSubview:self.objectInfoController.view];
         
-        NSIndexPath *index = selectedItems[0];
+        NSIndexPath *index = table.selectedRows[0];
         FileSystemItemInfo *item = [table.filesList objectAtIndex:index.row];
-        NSLog(@"%f", item.capacity);
         [self.objectInfoController representObjectInfo:item];
     }
-    else{
+    else if (table.selectedRows.count > 1){
         // Add multiple detailed panel to controllers view
-        [self.objectInfoController.view removeFromSuperview];
+        [self.detailedPanelView.subviews makeObjectsPerformSelector: @selector(removeFromSuperview)];
         [self.detailedPanelView addSubview:self.multipleInfoController.view];
         [self.multipleInfoController.view setFrame:self.objectInfoController.view.frame];
         NSMutableArray *selectedObjects = [[NSMutableArray alloc] init];
-        for (NSIndexPath *index in selectedItems){
+        for (NSIndexPath *index in table.selectedRows){
             [selectedObjects addObject:[table.filesList objectAtIndex:index.row]];
         }
         [self.multipleInfoController representObjectsInfo:[NSArray arrayWithArray:selectedObjects]];
+    }
+    else{
+        [self.detailedPanelView.subviews makeObjectsPerformSelector: @selector(removeFromSuperview)];
+        NSArray *subviewArray = [[NSBundle mainBundle] loadNibNamed:@"EmptySelectionView" owner:self options:nil];
+        UIView *emptySelectionView = [subviewArray objectAtIndex:0];
+        emptySelectionView.frame = CGRectMake(0, 0, self.detailedPanelView.frame.size.width, self.detailedPanelView.frame.size.height);
+        [self.detailedPanelView addSubview:emptySelectionView];
     }
 }
 

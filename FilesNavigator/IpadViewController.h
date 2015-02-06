@@ -14,8 +14,6 @@
 @interface IpadViewController : CommonViewController <UIGestureRecognizerDelegate>
 {
     BOOL isDetailedPanelVisible;
-    
-    NSMutableArray *selectedItems;
 }
 
 @property (strong, nonatomic) ObjectInfoViewController *objectInfoController;

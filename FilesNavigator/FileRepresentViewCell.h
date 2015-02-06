@@ -8,10 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+#define REUSE_IDENTIFICATOR @"reuseCell"
+
 /**
  Represents TableView cell with custom design and behaviour
  */
 @interface FileRepresentViewCell : UITableViewCell
+{
+    UIColor *defaultColor;
+}
 
 /// Represents an image which shows graphical file system object type
 @property (weak, nonatomic) IBOutlet UIImageView *fileTypeImage;
@@ -26,6 +31,8 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *sizeCalculationSpinner;
 
 @property (weak, nonatomic) IBOutlet UIImageView *rowSelectedIndicator;
+
+@property (nonatomic, readonly) BOOL isSelected;
 
 - (void) setSelectedForDetailedInfo;
 

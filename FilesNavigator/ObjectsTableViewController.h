@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "FileRepresentViewCell.h"
 
 @interface ObjectsTableViewController : UITableViewController <UIDocumentInteractionControllerDelegate>
 {
@@ -38,6 +39,9 @@
 /// Contains information about file system objects
 @property (strong, nonatomic) NSArray *filesList;
 
+/// Contains index paths to rows which were selected by user
+@property (readonly) NSArray *selectedRows;
+
 /**
  Initializes controller instance with path to file system object which content must be shown
  It also initializes recursive asynchronous computation of directories real sizes
@@ -51,8 +55,21 @@
  */
 - (void) cancelCalculations;
 
+/**
+ Organize selection of the cell which is located at specified indeex path
+ @param indexPath is a location of the cell
+ */
 - (void) selectCellAtIndex: (NSIndexPath*) indexPath;
 
+/**
+ Remove selection from the cell which is located at specified path
+@param indexPath is a location of the cell
+ */
 - (void) deselectCellAtIndex: (NSIndexPath*) indexPath;
+
+/**
+ Deselect all selected rows and clear array of selected rows
+ */
+- (void) clearSelectedRows;
 
 @end

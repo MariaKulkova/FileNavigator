@@ -13,6 +13,8 @@
     NSArray *filesList;
 }
 
+@property (weak, nonatomic) IBOutlet UILabel *itemsCountLabel;
+
 @property (weak, nonatomic) IBOutlet UIImageView *objectsImage;
 
 @property (weak, nonatomic) IBOutlet UILabel *totalSizeLable;
@@ -21,6 +23,10 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *objectsTableView;
 
+/**
+ Represent information about many file system objects in user interface
+ @param objects is an array of information about file system objects selected by user
+ */
 - (void) representObjectsInfo: (NSArray*) objects;
 
 @end

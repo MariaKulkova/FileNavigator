@@ -29,45 +29,6 @@
     return self;
 }
 
-#pragma mark - Rotation for iOS 8.0
-
-//- (void) calculateObjectFrame: (CGRect) frame{
-//    
-//}
-//
-//- (BOOL) shouldAutorotate{
-//    return YES;
-//}
-//
-//- (NSUInteger)supportedInterfaceOrientations{
-//    return UIInterfaceOrientationPortrait| UIInterfaceOrientationPortraitUpsideDown|UIInterfaceOrientationLandscapeLeft|UIInterfaceOrientationLandscapeRight;
-//}
-//
-//- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-//    // Return YES for supported orientations
-//    return YES;
-//}
-
-//- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator{
-//    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
-//    
-//    // Code here will execute before the rotation begins.
-//    // Equivalent to placing it in the deprecated method -[willRotateToInterfaceOrientation:duration:]
-//    
-//    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
-//        
-//        // Place code here to perform animations during the rotation. You can leave this block empty if not necessary.
-//        
-//    } completion:^(id<UIViewControllerTransitionCoordinatorContext> context) {
-//        
-//        // Code here will execute after the rotation has finished.
-//        // Equivalent to placing it in the deprecated method -[didRotateFromInterfaceOrientation:]
-//        [self calculateObjectFrame:[[UIScreen mainScreen] bounds]];
-//    }];
-//}
-
-//#pragma mark - Rotation for earlier versions than iOS 8.0
-
 - (CGRect) receiveFrameForOrientation: (UIInterfaceOrientation) interfaceOrientation{
     CGRect mainFrame = [[UIScreen mainScreen] bounds];
     if (NSFoundationVersionNumber <= NSFoundationVersionNumber_iOS_7_1){
@@ -80,11 +41,6 @@
     }
     return mainFrame;
 }
-
-//- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
-//    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-//    [self calculateObjectFrame:[self receiveFrameForOrientation:toInterfaceOrientation]];
-//}
 
 /*
  // Override to support conditional editing of the table view.

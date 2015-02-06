@@ -31,13 +31,15 @@
 }
 
 - (void) setSelectedForDetailedInfo{
-    self.backgroundColor = [UIColor grayColor];
+    _isSelected = YES;
+    defaultColor = [self.backgroundColor copy];
+    self.backgroundColor = [UIColor colorWithRed:.8 green:.8 blue:.8 alpha:.5];
     self.rowSelectedIndicator.hidden = NO;
 }
 
 - (void) deselectFromDetailInfo{
-    // gjcn
-    self.backgroundColor = [UIColor whiteColor];
+    _isSelected = NO;
+    self.backgroundColor = nil;
     self.rowSelectedIndicator.hidden = YES;
 }
 

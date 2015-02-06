@@ -11,26 +11,34 @@
 
 @interface MultipleInfoViewController ()
 
+/**
+ Match file type and its graphical representation
+ @param fileType - contains type of file
+ @return image which complys with specified type of file
+ */
+-(UIImage*) receiveImageForFileGroup;
+
 @end
 
 @implementation MultipleInfoViewController
 
-- (id) init{
-    if (self = [super init]) {
-    }
-    return self;
-}
-
+// Represent information about many file system objects in user interface
 - (void) representObjectsInfo:(NSArray *)objects{
+    
     filesList = objects;
+    self.objectsImage.image = [self receiveImageForFileGroup];
+    self.itemsCountLabel.text = [NSString stringWithFormat:@"%d", filesList.count];
     double totalSize = [self calculateTotalSize];
-    if (totalSize == -1) {
+    
+    if (isnan(totalSize)) {
         [self.calculationSpinner startAnimating];
+        self.totalSizeLable.text = @"";
     }
     else{
         [self.calculationSpinner stopAnimating];
         self.totalSizeLable.text = [NSByteCountFormatter stringFromByteCount:totalSize countStyle:NSByteCountFormatterCountStyleBinary];
     }
+    
     [self.objectsTableView reloadData];
 }
 
@@ -44,7 +52,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    static NSString* cellIdentifier = @"reuseCell";
+    static NSString* cellIdentifier = @"filesCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     
     if (cell == nil) {
@@ -58,11 +66,13 @@
     return cell;
 }
 
+// calculate total size of all received objects
+// If some object has NAN capacity total size is NAN too
 - (double) calculateTotalSize{
     double totalSize = 0;
     for (FileSystemItemInfo *item in filesList){
-        if (item.capacity == -1){
-            totalSize = -1;
+        if (isnan(item.capacity)){
+            totalSize = NAN;
             break;
         }
         else{
@@ -71,6 +81,33 @@
     }
     return totalSize;
 }
+
+// Match file type and its graphical representation
+- (UIImage*) receiveImageForFileGroup{
+    NSMutableArray *tempFilesList = [[filesList sortedArrayUsingSelector:@selector(compare:)] mutableCopy];
+    UIImage* image;
+    
+    FileSystemItemInfo *firstObject = tempFilesList.firstObject;
+    FileSystemItemInfo *lastObject = tempFilesList.lastObject;
+    
+    // Determines file type and sets right icon in it representation
+    if ([firstObject.fileType isEqualToString:NSFileTypeDirectory] || [firstObject.fileType isEqualToString:NSFileTypeSymbolicLink]){
+        if ([lastObject.fileType isEqualToString:NSFileTypeDirectory] || [lastObject.fileType isEqualToString:NSFileTypeSymbolicLink]){
+            // Many directories
+            image = [UIImage imageNamed:@"folders_big.png"];
+        }
+        else{
+            // Files and directories
+            image = [UIImage imageNamed:@"file_and_folder_big"];
+        }
+    }
+    else if ([firstObject.fileType isEqualToString:NSFileTypeRegular]){
+        // Regular files
+        image = [UIImage imageNamed:@"files_big.png"];
+    }
+    return image;
+}
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];

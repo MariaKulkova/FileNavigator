@@ -10,9 +10,6 @@
 #import "FileSystemItemInfo.h"
 
 @interface ObjectInfoViewController : UIViewController
-{
-    NSDateFormatter *dataFormat;
-}
 
 @property (weak, nonatomic) IBOutlet UIImageView *objectImage;
 
@@ -28,8 +25,12 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *objectAccessLabel;
 
-- (void) representObjectInfo: (FileSystemItemInfo*) objectInfo;
-
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *calculationSpinner;
+
+/**
+ Represent information about file system object in user interface
+ @param objectInfo is an information about object of file system
+ */
+- (void) representObjectInfo: (FileSystemItemInfo*) objectInfo;
 
 @end

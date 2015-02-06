@@ -17,27 +17,33 @@
  */
 - (NSString *) convertPermissionToString: (long) permission;
 
+/**
+ Match file type and its graphical representation
+ @param fileType - contains type of file
+ @return image which complys with specified type of file
+ */
+-(UIImage*) receiveImageForFileType: (NSString*) fileType;
+
 @end
 
 @implementation ObjectInfoViewController
 
-- (id) init{
-    if (self = [super init]) {
+// Represent information about file system object in user interface
+- (void) representObjectInfo:(FileSystemItemInfo *)objectInfo{
+    
+    static NSDateFormatter *dataFormat = nil;
+    if (dataFormat == nil){
         dataFormat = [[NSDateFormatter alloc] init];
         [dataFormat setDateFormat:@"yyyy.dd.MM HH:ss"];
     }
-    return self;
-}
-
-- (void) representObjectInfo:(FileSystemItemInfo *)objectInfo{
     
+    self.objectImage.image = [self receiveImageForFileType:objectInfo.fileType];
     self.objectNameLabel.text = objectInfo.name;
-    if (objectInfo.capacity == -1){
+    if (isnan(objectInfo.capacity)){
         [self.calculationSpinner startAnimating];
         self.objectSizeLabel.text = @"";
     }
     else{
-        NSLog(@"%f", objectInfo.capacity);
         [self.calculationSpinner stopAnimating];
         self.objectSizeLabel.text = [NSByteCountFormatter stringFromByteCount:objectInfo.capacity countStyle:NSByteCountFormatterCountStyleBinary];
     }
@@ -64,10 +70,28 @@
     return (result);
 }
 
+// Match file type and its graphical representation
+- (UIImage*) receiveImageForFileType: (NSString*) fileType{
+    UIImage* image;
+    // Determines file type and sets right icon in it representation
+    if ([fileType isEqualToString:NSFileTypeDirectory] || [fileType isEqualToString:NSFileTypeSymbolicLink]){
+        // Directory file type
+        image = [UIImage imageNamed:@"folder_big.png"];
+    }
+    else if ([fileType isEqualToString:NSFileTypeRegular]){
+        // Regular file type
+        image = [UIImage imageNamed:@"file_big.png"];
+    }
+    else {
+        // Other types of files
+        image = [UIImage imageNamed:@"file_big.png"];
+    }
+    return image;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    self.objectImage.image = [UIImage imageNamed:@"Folder.png"];
 }
 
 - (void) viewDidAppear:(BOOL)animated{

@@ -10,6 +10,7 @@
 #import "FileManager.h"
 #import "FileSystemItemInfo.h"
 #import "FileRepresentViewCell.h"
+#import "NotificationConstants.h"
 
 @interface ObjectsTableViewController ()
 
@@ -26,16 +27,15 @@
 
 @synthesize reviewedFilePath;
 
-
 #pragma mark - UIViewController
 
 // Initializes controller instance with path to file system object which content must be shown
-
 - (id) initWithFilePath: (NSString*) filePath{
     if (self = [super init]){
         
         self.reviewedFilePath = filePath;
         cancelledSizeCalculation = NO;
+        _selectedRows = [[NSArray alloc] init];
         
         // receives content of file system object
         FileManager *currentFileManager = [[FileManager alloc] init];
@@ -60,10 +60,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
+    // Not to show empty cells after all represented content
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
+    // Custom back button, which has no title
     UIBarButtonItem *customBackButtom = [[UIBarButtonItem alloc] initWithTitle:@""
                                                                          style:UIBarButtonItemStylePlain
                                                                         target:nil
@@ -95,7 +95,7 @@
         for (__block int i = 0; i < self.filesList.count; i++) {
             
             FileSystemItemInfo *item = self.filesList[i];
-            if (item.capacity == -1) {
+            if (isnan(item.capacity)) {
                 dispatch_semaphore_wait(cancelledCalculationsSemaphor, DISPATCH_TIME_FOREVER);
                 if (cancelledSizeCalculation) {
                     dispatch_semaphore_signal(cancelledCalculationsSemaphor);
@@ -143,7 +143,7 @@
                                     else{
                                         // If computation was interrupted it cancells calculation results
                                         FileSystemItemInfo *item = [self.filesList objectAtIndex:i];
-                                        item.capacity = -1;
+                                        item.capacity = NAN;
                                     }
                                     dispatch_semaphore_signal(cancelledCalculationsSemaphor);
                                 }
@@ -157,10 +157,9 @@
                 });
                 //----------------------------------------------------------------------------------------
                 dispatch_sync(dispatch_get_main_queue(), ^{
-                    NSString *notificationName = @"SizeCalculationFinishedNotificator";
-                    NSString *key = @"Index";
-                    NSDictionary *dictionary = [NSDictionary dictionaryWithObject:[NSIndexPath indexPathForRow:i inSection:0] forKey:key];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil userInfo:dictionary];
+                    // Notify that one directory size calculation was finished
+                    NSDictionary *dictionary = [NSDictionary dictionaryWithObject:[NSIndexPath indexPathForRow:i inSection:0] forKey:INDEX_KEY];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:FINISH_CALCULATION_NOTIFICATION object:nil userInfo:dictionary];
                 });
             }
         }
@@ -186,15 +185,25 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
-    static NSString* cellIdentifier = @"reuseCell";
-    //FileRepresentViewCell *cell = [tableView dequeueReusableHeaderFooterViewWithIdentifier:cellIdentifier];
-    FileRepresentViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+//    static NSString* cellIdentifier = @"reuseCell";
+    FileRepresentViewCell *cell = [tableView dequeueReusableCellWithIdentifier:REUSE_IDENTIFICATOR];
     
-    // Links sell with .xib file representing cell
+//    if (cell == nil) {
+//        NSLog(@"creating a new cell");
+//        
+//        // Load the table view cell from a Nib file.
+//        NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"MyCustomCell" owner:self options:nil];
+//        
+//        // The checkedTableViewCell property is just a temporary placeholder for loading the Nib.
+//        cell = [topLevelObjects objectAtIndex:0];
+//    }
+    
+     //Links sell with .xib file representing cell
 //    if (!cell)
 //    {
-////        [tableView registerNib:[UINib nibWithNibName:@"MyCustomCell" bundle:nil] forCellReuseIdentifier:cellIdentifier];
-////        cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+//        NSLog(@"creating a new cell");
+//        [tableView registerNib:[UINib nibWithNibName:@"MyCustomCell" bundle:nil] forCellReuseIdentifier:cellIdentifier];
+//        cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 //    }
     
     FileSystemItemInfo *fileListItem = [self.filesList objectAtIndex:indexPath.row];
@@ -204,7 +213,7 @@
     cell.fileNameLabel.text = fileListItem.name;
     
     if ([fileListItem.fileType isEqualToString:NSFileTypeDirectory]){
-        if (fileListItem.capacity == -1){
+        if (isnan(fileListItem.capacity)){
             // directory size hasn't recalculated yet
             cell.fileSizeLabel.text = @"";
             [cell.sizeCalculationSpinner startAnimating];
@@ -218,6 +227,13 @@
     else{
         cell.fileSizeLabel.text = [NSByteCountFormatter stringFromByteCount:fileListItem.capacity countStyle:NSByteCountFormatterCountStyleBinary];
     }
+    // Recover selection appearance
+    if ([_selectedRows containsObject:indexPath]) {
+        [cell setSelectedForDetailedInfo];
+    }
+    else{
+        [cell deselectFromDetailInfo];
+    }
     
     return cell;
 }
@@ -228,27 +244,8 @@
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     FileSystemItemInfo *fileListItem = [self.filesList objectAtIndex:indexPath.row];
-    
-    // Initializes new controller with path of file which has been just selected
-    // Path of file represent a concatination of current directory path and name of selected file
-    if ([fileListItem.fileType isEqualToString:NSFileTypeDirectory] || [fileListItem.fileType isEqualToString:NSFileTypeSymbolicLink]) {
-        ObjectsTableViewController *directoryContentViewController = [[ObjectsTableViewController alloc]
-                                                                initWithFilePath:[reviewedFilePath stringByAppendingPathComponent:fileListItem.name]];
-        
-        if (directoryContentViewController == nil) {
-            UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Can't open file"
-                                                               message:@"This directory content can't be shown"
-                                                              delegate:self
-                                                     cancelButtonTitle:@"Ok"
-                                                     otherButtonTitles:nil];
-            [alertView show];
-        }
-        else{
-            directoryContentViewController.navigationItem.title = fileListItem.name;
-            [self.navigationController pushViewController:directoryContentViewController animated:YES];
-        }
-    }
-    else{
+
+    if ([fileListItem.fileType isEqualToString:NSFileTypeRegular]) {
         NSURL *URL = [NSURL fileURLWithPath:[reviewedFilePath stringByAppendingPathComponent:fileListItem.name]];
         
         if (URL) {
@@ -269,6 +266,25 @@
                                                          otherButtonTitles:nil];
                 [alertView show];
             }
+        }
+    }
+    else {
+        // Initializes new controller with path of file which has been just selected
+        // Path of file represent a concatination of current directory path and name of selected file
+        ObjectsTableViewController *directoryContentViewController = [[ObjectsTableViewController alloc]
+                                                                      initWithFilePath:[reviewedFilePath stringByAppendingPathComponent:fileListItem.name]];
+        
+        if (directoryContentViewController == nil) {
+            UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Can't open file"
+                                                               message:@"This directory content can't be shown"
+                                                              delegate:self
+                                                     cancelButtonTitle:@"Ok"
+                                                     otherButtonTitles:nil];
+            [alertView show];
+        }
+        else{
+            directoryContentViewController.navigationItem.title = fileListItem.name;
+            [self.navigationController pushViewController:directoryContentViewController animated:YES];
         }
     }
 }
@@ -303,27 +319,46 @@
     // Determines file type and sets right icon in it representation
     if ([fileType isEqualToString:NSFileTypeDirectory] || [fileType isEqualToString:NSFileTypeSymbolicLink]){
         // Directory file type
-        image = [UIImage imageNamed:@"Folder.png"];
+        image = [UIImage imageNamed:@"folder_small.png"];
     }
     else if ([fileType isEqualToString:NSFileTypeRegular]){
         // Regular file type
-        image = [UIImage imageNamed:@"File.png"];
+        image = [UIImage imageNamed:@"file_small.png"];
     }
     else {
         // Other types of files
-        image = [UIImage imageNamed:@"File.png"];
+        image = [UIImage imageNamed:@"file_small.png"];
     }
     return image;
 }
 
+// Organize selection of the cell which is located at specified indeex path
 - (void) selectCellAtIndex:(NSIndexPath *)indexPath{
+    NSMutableArray *tempSelectedRows = [_selectedRows mutableCopy];
+    [tempSelectedRows addObject:indexPath];
+    _selectedRows = [NSArray arrayWithArray:tempSelectedRows];
     FileRepresentViewCell *cell = (FileRepresentViewCell*)[self.tableView cellForRowAtIndexPath:indexPath];
     [cell setSelectedForDetailedInfo];
 }
 
+// Remove selection from the cell which is located at specified path
 - (void) deselectCellAtIndex:(NSIndexPath *)indexPath{
+    NSMutableArray *tempSelectedRows = [_selectedRows mutableCopy];
+    [tempSelectedRows removeObject:indexPath];
+    _selectedRows = [NSArray arrayWithArray:tempSelectedRows];
     FileRepresentViewCell *cell = (FileRepresentViewCell*)[self.tableView cellForRowAtIndexPath:indexPath];
     [cell deselectFromDetailInfo];
+}
+
+// Deselect all selected rows and clear array of selected rows
+- (void) clearSelectedRows{
+    NSMutableArray *tempSelectedRows = [_selectedRows mutableCopy];
+    for (NSIndexPath *index in _selectedRows){
+        FileRepresentViewCell *cell = (FileRepresentViewCell*)[self.tableView cellForRowAtIndexPath:index];
+        [cell deselectFromDetailInfo];
+    }
+    [tempSelectedRows removeAllObjects];
+    _selectedRows = [NSArray arrayWithArray:tempSelectedRows];
 }
 
 /*
