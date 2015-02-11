@@ -72,9 +72,12 @@
     
     // Links sell with .nib file representing cell
     [self.tableView registerNib:[UINib nibWithNibName:@"MyCustomCell" bundle:nil] forCellReuseIdentifier:@"reuseCell"];
+    FileRepresentViewCell *cell = (FileRepresentViewCell*)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    CGFloat xInset = cell.fileNameLabel.frame.origin.x;
+    [self.tableView setSeparatorInset:UIEdgeInsetsMake(0, xInset, 0, 0)];
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning{
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
@@ -234,7 +237,6 @@
     else{
         [cell deselectFromDetailInfo];
     }
-    
     return cell;
 }
 
@@ -319,15 +321,15 @@
     // Determines file type and sets right icon in it representation
     if ([fileType isEqualToString:NSFileTypeDirectory] || [fileType isEqualToString:NSFileTypeSymbolicLink]){
         // Directory file type
-        image = [UIImage imageNamed:@"folder_small.png"];
+        image = [UIImage imageNamed:@"folderSmall@2x.png"];
     }
     else if ([fileType isEqualToString:NSFileTypeRegular]){
         // Regular file type
-        image = [UIImage imageNamed:@"file_small.png"];
+        image = [UIImage imageNamed:@"fileSmall@2x.png"];
     }
     else {
         // Other types of files
-        image = [UIImage imageNamed:@"file_small.png"];
+        image = [UIImage imageNamed:@"fileSmall@2x.png"];
     }
     return image;
 }

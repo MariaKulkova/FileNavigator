@@ -30,7 +30,7 @@
 }
 
 - (CGRect) receiveFrameForOrientation: (UIInterfaceOrientation) interfaceOrientation{
-    CGRect mainFrame = [[UIScreen mainScreen] bounds];
+    CGRect mainFrame = [[UIScreen mainScreen] applicationFrame];
     if (NSFoundationVersionNumber <= NSFoundationVersionNumber_iOS_7_1){
         if (interfaceOrientation == UIInterfaceOrientationPortrait || interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) {
             return (CGRectMake(mainFrame.origin.x, mainFrame.origin.y, mainFrame.size.width, mainFrame.size.height));

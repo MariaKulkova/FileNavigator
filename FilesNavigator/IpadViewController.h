@@ -23,6 +23,9 @@
 /// View controller for group object detailed information representation
 @property (strong, nonatomic) MultipleInfoViewController *multipleInfoController;
 
+// View which appears, when no items were selected
+@property (strong, nonatomic) UIView *emptySelectionView;
+
 /// Represents view for navigation controller storage
 @property (weak, nonatomic) IBOutlet UIView *objectsTableView;
 

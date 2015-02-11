@@ -45,8 +45,18 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.objectsTableView addSubview:[self.navigationController view]];
+    
     // Long tap has higher priority than single tap
     [self.singleTapRecognizer requireGestureRecognizerToFail:self.longTapRecognizer];
+    
+    // Load view for emty selection notification
+    NSArray *subviewArray = [[NSBundle mainBundle] loadNibNamed:@"EmptySelectionView" owner:self options:nil];
+    self.emptySelectionView = [subviewArray objectAtIndex:0];
+    
+    CGRect frame = [self receiveFrameForOrientation:self.interfaceOrientation];
+    [self.objectsTableView setFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+    [self.navigationController.view setFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+    [self.detailedPanelView setFrame:CGRectMake(0, 0, 0, 0)];
     
     //Long tap
     //-------------------------------------------------------------------------------------------------------------
@@ -93,7 +103,6 @@
             
             ObjectsTableViewController *table = (ObjectsTableViewController*)self.navigationController.topViewController;
             table.tableView.allowsSelection = YES;
-            self.navigationController.navigationItem.backBarButtonItem.enabled = YES;
             [table clearSelectedRows];
         }
     }
@@ -140,12 +149,15 @@
     
     NSIndexPath *index = [table.tableView indexPathForRowAtPoint:location];
     FileRepresentViewCell *cell = (FileRepresentViewCell*)[table.tableView cellForRowAtIndexPath:index];
-    
+
+    // If tap happened on table cell
     if (cell != nil) {
+        // if this cell has already selected deselect it
         if ([table.selectedRows containsObject:index]) {
             [table deselectCellAtIndex:index];
         }
         else{
+            // otherwise select it
             [table selectCellAtIndex:index];
         }
         [self updateDetailPanel];
@@ -163,61 +175,88 @@
 }
 
 - (void) calculateObjectFrame: (CGRect) frame{
+    
+    // Increase navigation bar width to width of window
+    CGRect navFrame = self.navigationController.navigationBar.frame;
+    navFrame.size.width = frame.size.width;
+    
     if (isDetailedPanelVisible) {
         
-        [self.objectsTableView setFrame:CGRectMake(0, 0, frame.size.width/2, frame.size.height)];
-        [self.detailedPanelView setFrame:CGRectMake(frame.size.width/2, 0, frame.size.width/2, frame.size.height)];
+        // Detail panel is visible. Make left and right views occupy equal width space
+        [self.detailedPanelView setFrame:CGRectMake(frame.size.width/2, navFrame.size.height + navFrame.origin.y, frame.size.width/2, frame.size.height - navFrame.size.height - navFrame.origin.y)];
+        
+        // Add detail panel appearance animation
+        [UIView animateWithDuration:0.5 animations:^{
+            [self.navigationController.navigationBar setFrame:navFrame];
+            [self.objectsTableView setFrame:CGRectMake(0, 0, frame.size.width/2, frame.size.height)];
+        }];
+        
         [self.navigationController.view setFrame:CGRectMake(0, 0, self.objectsTableView.frame.size.width, self.objectsTableView.frame.size.height)];
+        // TODO: objectInfoController - it not correct in common. It works because its view always appears first
         [self.objectInfoController.view setFrame:CGRectMake(0, 0, self.detailedPanelView.frame.size.width, self.detailedPanelView.frame.size.height)];
     }
     else{
-        [self.detailedPanelView setFrame:CGRectMake(0, 0, 0, 0)];
-        [self.objectsTableView setFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+        
+        // Detail panel isn't visible. Make table view occupy all space of application
+        // Add animation of detail panel disapearing.It is necessary to add navigation bar frame changing to achive correct animation effect
+        [UIView animateWithDuration:0.5 animations:^{
+            [self.navigationController.navigationBar setFrame:navFrame];
+            [self.objectsTableView setFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+        }];
         [self.navigationController.view setFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+        [self.detailedPanelView setFrame:CGRectMake(0, 0, 0, 0)];
     }
 }
 
+// when size update notification appers
 - (void) analyzeSizeUpdate: (NSNotification*) notification{
+    
     NSDictionary *dictionary = [notification userInfo];
-    ObjectsTableViewController *table = (ObjectsTableViewController*)self.navigationController.topViewController;
+    ObjectsTableViewController *tableController = (ObjectsTableViewController*)self.navigationController.topViewController;
     NSIndexPath *index = [dictionary valueForKey:INDEX_KEY];
-    if ([table.selectedRows containsObject:index]){
+    
+    // If updating row is contained in array with selected rows activate detailed date updating
+    if ([tableController.selectedRows containsObject:index]){
         [self updateDetailPanel];
     }
 }
 
 - (void) updateDetailPanel{
-    ObjectsTableViewController *table = (ObjectsTableViewController*)self.navigationController.topViewController;
-    if (table.selectedRows.count == 1) {
+    // Get top table view controller
+    ObjectsTableViewController *tableController = (ObjectsTableViewController*)self.navigationController.topViewController;
+    
+    if (tableController.selectedRows.count == 1) {
+        // Single selection
+        
         // Add single detailed panel to controllers view
         [self.detailedPanelView.subviews makeObjectsPerformSelector: @selector(removeFromSuperview)];
         [self.detailedPanelView addSubview:self.objectInfoController.view];
-        [self.objectInfoController.view setFrame:self.objectInfoController.view.frame];
         
         // Update information in detailed panel
-        NSIndexPath *index = table.selectedRows[0];
-        [self.objectInfoController representObjectInfo:[table.filesList objectAtIndex:index.row]];
+        NSIndexPath *index = tableController.selectedRows[0];
+        [self.objectInfoController representObjectInfo:[tableController.filesList objectAtIndex:index.row]];
     }
-    else if (table.selectedRows.count > 1){
+    else if (tableController.selectedRows.count > 1){
+        // Multiple selection
+        
         // Add multiple detailed panel to controllers view
         [self.detailedPanelView.subviews makeObjectsPerformSelector: @selector(removeFromSuperview)];
         [self.detailedPanelView addSubview:self.multipleInfoController.view];
-        [self.multipleInfoController.view setFrame:self.objectInfoController.view.frame];
         
         // Update information in detailed panel
         NSMutableArray *selectedObjects = [[NSMutableArray alloc] init];
-        for (NSIndexPath *index in table.selectedRows){
-            [selectedObjects addObject:[table.filesList objectAtIndex:index.row]];
+        for (NSIndexPath *index in tableController.selectedRows){
+            [selectedObjects addObject:[tableController.filesList objectAtIndex:index.row]];
         }
         [self.multipleInfoController representObjectsInfo:[NSArray arrayWithArray:selectedObjects]];
     }
     else{
+        // Empty selection
+        
         // If there are no selectes cells in table
         [self.detailedPanelView.subviews makeObjectsPerformSelector: @selector(removeFromSuperview)];
-        NSArray *subviewArray = [[NSBundle mainBundle] loadNibNamed:@"EmptySelectionView" owner:self options:nil];
-        UIView *emptySelectionView = [subviewArray objectAtIndex:0];
-        emptySelectionView.frame = CGRectMake(0, 0, self.detailedPanelView.frame.size.width, self.detailedPanelView.frame.size.height);
-        [self.detailedPanelView addSubview:emptySelectionView];
+        self.emptySelectionView.frame = CGRectMake(0, 0, self.detailedPanelView.frame.size.width, self.detailedPanelView.frame.size.height);
+        [self.detailedPanelView addSubview:self.emptySelectionView];
     }
 }
 

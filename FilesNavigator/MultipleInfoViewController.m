@@ -27,7 +27,7 @@
     
     filesList = objects;
     self.objectsImage.image = [self receiveImageForFileGroup];
-    self.itemsCountLabel.text = [NSString stringWithFormat:@"%d", filesList.count];
+    self.itemsCountLabel.text = [NSString stringWithFormat:@"%d Items", filesList.count];
     double totalSize = [self calculateTotalSize];
     
     if (isnan(totalSize)) {
@@ -95,16 +95,16 @@
     if ([firstObject.fileType isEqualToString:NSFileTypeDirectory] || [firstObject.fileType isEqualToString:NSFileTypeSymbolicLink]){
         if ([lastObject.fileType isEqualToString:NSFileTypeDirectory] || [lastObject.fileType isEqualToString:NSFileTypeSymbolicLink]){
             // Many directories
-            image = [UIImage imageNamed:@"folders_big.png"];
+            image = [UIImage imageNamed:@"foldersBig.png"];
         }
         else{
             // Files and directories
-            image = [UIImage imageNamed:@"file_and_folder_big"];
+            image = [UIImage imageNamed:@"fileAndFolderBig"];
         }
     }
     else if ([firstObject.fileType isEqualToString:NSFileTypeRegular]){
         // Regular files
-        image = [UIImage imageNamed:@"files_big.png"];
+        image = [UIImage imageNamed:@"filesBig.png"];
     }
     return image;
 }
