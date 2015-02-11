@@ -34,6 +34,8 @@
     if (self = [super init]){
         
         self.reviewedFilePath = filePath;
+        self.documentInteractionController = [[UIDocumentInteractionController alloc] init];
+        [self.documentInteractionController setDelegate:self];
         cancelledSizeCalculation = NO;
         _selectedRows = [[NSArray alloc] init];
         
@@ -251,14 +253,11 @@
         NSURL *URL = [NSURL fileURLWithPath:[reviewedFilePath stringByAppendingPathComponent:fileListItem.name]];
         
         if (URL) {
-            // Initialize Document Interaction Controller
-            documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:URL];
-            
-            // Configure Document Interaction Controller
-            [documentInteractionController setDelegate:self];
+            // Initialize Document Interaction Controller with URL
+            self.documentInteractionController.URL = URL;
             
             // Preview PDF
-            BOOL previewingResult = [documentInteractionController presentPreviewAnimated:YES];
+            BOOL previewingResult = [self.documentInteractionController presentPreviewAnimated:YES];
             if (!previewingResult) {
                 // show message about file preview
                 UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Can't open file"
@@ -275,7 +274,7 @@
         // Path of file represent a concatination of current directory path and name of selected file
         ObjectsTableViewController *directoryContentViewController = [[ObjectsTableViewController alloc]
                                                                       initWithFilePath:[reviewedFilePath stringByAppendingPathComponent:fileListItem.name]];
-        
+        //directoryContentViewController.documentInteractionController.delegate = self.documentInteractionController.delegate;
         if (directoryContentViewController == nil) {
             UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Can't open file"
                                                                message:@"This directory content can't be shown"
@@ -295,7 +294,7 @@
 #pragma mark - UIDocumentInteractionController delegate
 
 - (UIViewController *) documentInteractionControllerViewControllerForPreview: (UIDocumentInteractionController *) controller {
-    return self;
+    return [[[[UIApplication sharedApplication] delegate] window] rootViewController];
 }
 
 #pragma mark -

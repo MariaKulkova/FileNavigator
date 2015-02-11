@@ -6,8 +6,6 @@
 //  Copyright (c) 2015 Maria. All rights reserved.
 //
 
-#import "CommonViewController.h"
-
-@interface IphoneViewController : CommonViewController
+@interface IphoneViewController
 
 @end

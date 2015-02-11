@@ -7,7 +7,7 @@
 //
 
 #import "FileSystemNavigationController.h"
-#import "CommonViewController.h"
+#import "ObjectsTableViewController.h"
 
 @interface FileSystemNavigationController ()
 

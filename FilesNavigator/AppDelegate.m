@@ -7,9 +7,9 @@
 //
 
 #import "AppDelegate.h"
-#import "CommonViewController.h"
 #import "IphoneViewController.h"
 #import "IpadViewController.h"
+#import "ObjectsTableViewController.h"
 
 @interface AppDelegate ()
 
@@ -23,8 +23,8 @@
     
     // instatiate main view controllers from storyboards
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone){
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iPhoneStoryboard" bundle:nil];
-        self.window.rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"iPhoneController"];
+        ObjectsTableViewController *rootViewController = [[ObjectsTableViewController alloc] initWithFilePath:@"/"];
+        self.window.rootViewController = [[FileSystemNavigationController alloc] initWithRootViewController:rootViewController];
     }
     else{
     

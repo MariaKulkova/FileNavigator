@@ -28,9 +28,6 @@
     
     // Store links to FileManager instances to control any computational processes excuted by it
     NSMutableArray *fileManagerLinks;
-    
-    // Allows to preview documents
-    UIDocumentInteractionController *documentInteractionController;
 }
 
 /// Contains path to file which is reviewed by current controller
@@ -41,6 +38,9 @@
 
 /// Contains index paths to rows which were selected by user
 @property (readonly) NSArray *selectedRows;
+
+/// Allows to preview documents
+@property (strong, nonatomic) UIDocumentInteractionController *documentInteractionController;
 
 /**
  Initializes controller instance with path to file system object which content must be shown

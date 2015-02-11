@@ -31,6 +31,8 @@
         isDetailedPanelVisible = NO;
         self.objectInfoController = [[ObjectInfoViewController alloc] init];
         self.multipleInfoController = [[MultipleInfoViewController alloc] init];
+        ObjectsTableViewController *rootViewController = [[ObjectsTableViewController alloc] initWithFilePath:@"/"];
+        self.tableNavigationController = [[FileSystemNavigationController alloc] initWithRootViewController:rootViewController];
         
         // Subscribe to event of size calculation finish
         [[NSNotificationCenter defaultCenter]
@@ -42,34 +44,36 @@
     return self;
 }
 
+- (UIViewController *) documentInteractionControllerViewControllerForPreview: (UIDocumentInteractionController *) controller {
+    return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self.objectsTableView addSubview:[self.navigationController view]];
+    [self.objectsTableView addSubview:[self.tableNavigationController view]];
     
     // Long tap has higher priority than single tap
     [self.singleTapRecognizer requireGestureRecognizerToFail:self.longTapRecognizer];
     
-    // Load view for emty selection notification
+    // Load view for empty selection notification
     NSArray *subviewArray = [[NSBundle mainBundle] loadNibNamed:@"EmptySelectionView" owner:self options:nil];
     self.emptySelectionView = [subviewArray objectAtIndex:0];
     
     CGRect frame = [self receiveFrameForOrientation:self.interfaceOrientation];
     [self.objectsTableView setFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
-    [self.navigationController.view setFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
-    [self.detailedPanelView setFrame:CGRectMake(0, 0, 0, 0)];
+    [self.tableNavigationController.view setFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+    [self.detailedPanelView setFrame:CGRectZero];
     
     //Long tap
     //-------------------------------------------------------------------------------------------------------------
     self.longTapRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(showDetailsPanelForLongTapRecognizer:)];
     self.longTapRecognizer.minimumPressDuration = 0.5;
-    self.longTapRecognizer.delegate = self;
     [self.view addGestureRecognizer:self.longTapRecognizer];
     //-------------------------------------------------------------------------------------------------------------
     
     //Swipe
     //-------------------------------------------------------------------------------------------------------------
     self.swipeRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(hideDetailsPanelForSwipe:)];
-    //self.swipeRecognizer.delegate = self;
     [self.view addGestureRecognizer:self.swipeRecognizer];
     //-------------------------------------------------------------------------------------------------------------
     
@@ -77,7 +81,6 @@
     //-------------------------------------------------------------------------------------------------------------
     self.singleTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(selectForTapRecognizer:)];
     self.singleTapRecognizer.numberOfTapsRequired = 1;
-    self.singleTapRecognizer.delegate = self;
     [self.view addGestureRecognizer:self.singleTapRecognizer];
     //-------------------------------------------------------------------------------------------------------------
     
@@ -99,9 +102,9 @@
             self.singleTapRecognizer.enabled = NO;
             self.longTapRecognizer.enabled = YES;
             self.swipeRecognizer.enabled = NO;
-            self.navigationController.topViewController.navigationItem.hidesBackButton = NO;
+            self.tableNavigationController.topViewController.navigationItem.hidesBackButton = NO;
             
-            ObjectsTableViewController *table = (ObjectsTableViewController*)self.navigationController.topViewController;
+            ObjectsTableViewController *table = (ObjectsTableViewController*)self.tableNavigationController.topViewController;
             table.tableView.allowsSelection = YES;
             [table clearSelectedRows];
         }
@@ -112,7 +115,7 @@
     
     // Get the location of the gesture
     CGPoint location = [recognizer locationInView:self.objectsTableView];
-    ObjectsTableViewController *table = (ObjectsTableViewController*)self.navigationController.topViewController;
+    ObjectsTableViewController *table = (ObjectsTableViewController*)self.tableNavigationController.topViewController;
     location.x += table.tableView.contentOffset.x;
     location.y += table.tableView.contentOffset.y;
     
@@ -129,7 +132,7 @@
             [self calculateObjectFrame:[self receiveFrameForOrientation:self.interfaceOrientation]];
             
             [table selectCellAtIndex:index];
-            self.navigationController.topViewController.navigationItem.hidesBackButton = YES;
+            self.tableNavigationController.topViewController.navigationItem.hidesBackButton = YES;
             table.tableView.allowsSelection = NO;
             self.longTapRecognizer.enabled = NO;
             self.singleTapRecognizer.enabled = YES;
@@ -143,7 +146,7 @@
     
     // Get the location of the gesture
     CGPoint location = [recognizer locationInView:self.objectsTableView];
-    ObjectsTableViewController *table = (ObjectsTableViewController*)self.navigationController.topViewController;
+    ObjectsTableViewController *table = (ObjectsTableViewController*)self.tableNavigationController.topViewController;
     location.x += table.tableView.contentOffset.x;
     location.y += table.tableView.contentOffset.y;
     
@@ -177,21 +180,20 @@
 - (void) calculateObjectFrame: (CGRect) frame{
     
     // Increase navigation bar width to width of window
-    CGRect navFrame = self.navigationController.navigationBar.frame;
+    CGRect navFrame = self.tableNavigationController.navigationBar.frame;
     navFrame.size.width = frame.size.width;
     
     if (isDetailedPanelVisible) {
         
         // Detail panel is visible. Make left and right views occupy equal width space
         [self.detailedPanelView setFrame:CGRectMake(frame.size.width/2, navFrame.size.height + navFrame.origin.y, frame.size.width/2, frame.size.height - navFrame.size.height - navFrame.origin.y)];
-        
+        [self.tableNavigationController.navigationBar setFrame:navFrame];
         // Add detail panel appearance animation
         [UIView animateWithDuration:0.5 animations:^{
-            [self.navigationController.navigationBar setFrame:navFrame];
             [self.objectsTableView setFrame:CGRectMake(0, 0, frame.size.width/2, frame.size.height)];
         }];
         
-        [self.navigationController.view setFrame:CGRectMake(0, 0, self.objectsTableView.frame.size.width, self.objectsTableView.frame.size.height)];
+        [self.tableNavigationController.view setFrame:CGRectMake(0, 0, self.objectsTableView.frame.size.width, self.objectsTableView.frame.size.height)];
         // TODO: objectInfoController - it not correct in common. It works because its view always appears first
         [self.objectInfoController.view setFrame:CGRectMake(0, 0, self.detailedPanelView.frame.size.width, self.detailedPanelView.frame.size.height)];
     }
@@ -200,11 +202,11 @@
         // Detail panel isn't visible. Make table view occupy all space of application
         // Add animation of detail panel disapearing.It is necessary to add navigation bar frame changing to achive correct animation effect
         [UIView animateWithDuration:0.5 animations:^{
-            [self.navigationController.navigationBar setFrame:navFrame];
             [self.objectsTableView setFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+            [self.tableNavigationController.navigationBar setFrame:navFrame];
         }];
-        [self.navigationController.view setFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
-        [self.detailedPanelView setFrame:CGRectMake(0, 0, 0, 0)];
+        [self.tableNavigationController.view setFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+        [self.detailedPanelView setFrame:CGRectZero];
     }
 }
 
@@ -212,7 +214,7 @@
 - (void) analyzeSizeUpdate: (NSNotification*) notification{
     
     NSDictionary *dictionary = [notification userInfo];
-    ObjectsTableViewController *tableController = (ObjectsTableViewController*)self.navigationController.topViewController;
+    ObjectsTableViewController *tableController = (ObjectsTableViewController*)self.tableNavigationController.topViewController;
     NSIndexPath *index = [dictionary valueForKey:INDEX_KEY];
     
     // If updating row is contained in array with selected rows activate detailed date updating
@@ -223,7 +225,8 @@
 
 - (void) updateDetailPanel{
     // Get top table view controller
-    ObjectsTableViewController *tableController = (ObjectsTableViewController*)self.navigationController.topViewController;
+    ObjectsTableViewController *tableController = (ObjectsTableViewController*)self.tableNavigationController.topViewController;
+    CGRect panelFrame = self.detailedPanelView.frame;
     
     if (tableController.selectedRows.count == 1) {
         // Single selection
@@ -231,6 +234,7 @@
         // Add single detailed panel to controllers view
         [self.detailedPanelView.subviews makeObjectsPerformSelector: @selector(removeFromSuperview)];
         [self.detailedPanelView addSubview:self.objectInfoController.view];
+        [self.objectInfoController.view setFrame:CGRectMake(0, 0, panelFrame.size.width, panelFrame.size.height)];
         
         // Update information in detailed panel
         NSIndexPath *index = tableController.selectedRows[0];
@@ -242,6 +246,7 @@
         // Add multiple detailed panel to controllers view
         [self.detailedPanelView.subviews makeObjectsPerformSelector: @selector(removeFromSuperview)];
         [self.detailedPanelView addSubview:self.multipleInfoController.view];
+        [self.multipleInfoController.view setFrame:CGRectMake(0, 0, panelFrame.size.width, panelFrame.size.height)];
         
         // Update information in detailed panel
         NSMutableArray *selectedObjects = [[NSMutableArray alloc] init];
@@ -253,11 +258,26 @@
     else{
         // Empty selection
         
-        // If there are no selectes cells in table
+        // If there are no selected cells in table
         [self.detailedPanelView.subviews makeObjectsPerformSelector: @selector(removeFromSuperview)];
-        self.emptySelectionView.frame = CGRectMake(0, 0, self.detailedPanelView.frame.size.width, self.detailedPanelView.frame.size.height);
+        self.emptySelectionView.frame = CGRectMake(0, 0, panelFrame.size.width, panelFrame.size.height);
         [self.detailedPanelView addSubview:self.emptySelectionView];
     }
+}
+
+// Determines screen frame
+- (CGRect) receiveFrameForOrientation: (UIInterfaceOrientation) interfaceOrientation{
+    CGRect mainFrame = [[UIScreen mainScreen] applicationFrame];
+    mainFrame.size.height += [UIApplication sharedApplication].statusBarFrame.size.height;
+    if (NSFoundationVersionNumber <= NSFoundationVersionNumber_iOS_7_1){
+        if (interfaceOrientation == UIInterfaceOrientationPortrait || interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) {
+            return (CGRectMake(mainFrame.origin.x, mainFrame.origin.y, mainFrame.size.width, mainFrame.size.height));
+        }
+        else{
+            return (CGRectMake(mainFrame.origin.x, mainFrame.origin.y, mainFrame.size.height, mainFrame.size.width));
+        }
+    }
+    return mainFrame;
 }
 
 @end
