@@ -34,8 +34,8 @@
     if (self = [super init]){
         
         self.reviewedFilePath = filePath;
-        self.documentInteractionController = [[UIDocumentInteractionController alloc] init];
-        [self.documentInteractionController setDelegate:self];
+        documentInteractionController = [[UIDocumentInteractionController alloc] init];
+        [documentInteractionController setDelegate:self];
         cancelledSizeCalculation = NO;
         _selectedRows = [[NSArray alloc] init];
         
@@ -66,11 +66,12 @@
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
     // Custom back button, which has no title
-    UIBarButtonItem *customBackButtom = [[UIBarButtonItem alloc] initWithTitle:@""
+    UIBarButtonItem *customBackButton = [[UIBarButtonItem alloc] initWithTitle:@""
                                                                          style:UIBarButtonItemStylePlain
                                                                         target:nil
                                                                         action:nil];
-    [self.navigationItem setBackBarButtonItem:customBackButtom];
+    [self.navigationItem setBackBarButtonItem:customBackButton];
+    self.navigationController.navigationBar.tintColor = [UIColor orangeColor];
     
     // Links sell with .nib file representing cell
     [self.tableView registerNib:[UINib nibWithNibName:@"MyCustomCell" bundle:nil] forCellReuseIdentifier:@"reuseCell"];
@@ -254,10 +255,10 @@
         
         if (URL) {
             // Initialize Document Interaction Controller with URL
-            self.documentInteractionController.URL = URL;
+            documentInteractionController.URL = URL;
             
             // Preview PDF
-            BOOL previewingResult = [self.documentInteractionController presentPreviewAnimated:YES];
+            BOOL previewingResult = [documentInteractionController presentPreviewAnimated:YES];
             if (!previewingResult) {
                 // show message about file preview
                 UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Can't open file"
@@ -274,7 +275,6 @@
         // Path of file represent a concatination of current directory path and name of selected file
         ObjectsTableViewController *directoryContentViewController = [[ObjectsTableViewController alloc]
                                                                       initWithFilePath:[reviewedFilePath stringByAppendingPathComponent:fileListItem.name]];
-        //directoryContentViewController.documentInteractionController.delegate = self.documentInteractionController.delegate;
         if (directoryContentViewController == nil) {
             UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Can't open file"
                                                                message:@"This directory content can't be shown"
@@ -320,15 +320,15 @@
     // Determines file type and sets right icon in it representation
     if ([fileType isEqualToString:NSFileTypeDirectory] || [fileType isEqualToString:NSFileTypeSymbolicLink]){
         // Directory file type
-        image = [UIImage imageNamed:@"folderSmall@2x.png"];
+        image = [UIImage imageNamed:@"Folder_material.png"];
     }
     else if ([fileType isEqualToString:NSFileTypeRegular]){
         // Regular file type
-        image = [UIImage imageNamed:@"fileSmall@2x.png"];
+        image = [UIImage imageNamed:@"File_material.png"];
     }
     else {
         // Other types of files
-        image = [UIImage imageNamed:@"fileSmall@2x.png"];
+        image = [UIImage imageNamed:@"File_material.png"];
     }
     return image;
 }

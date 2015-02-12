@@ -14,10 +14,13 @@
 
 @interface IpadViewController ()
 
+/// Gesture recognizer for long tap
 @property(strong, nonatomic) UILongPressGestureRecognizer *longTapRecognizer;
 
+/// Gesture recognizer for swipe
 @property(strong, nonatomic) UISwipeGestureRecognizer *swipeRecognizer;
 
+/// Gesture recognizer for single tap
 @property(strong, nonatomic) UITapGestureRecognizer *singleTapRecognizer;
 
 @end
@@ -44,10 +47,6 @@
     return self;
 }
 
-- (UIViewController *) documentInteractionControllerViewControllerForPreview: (UIDocumentInteractionController *) controller {
-    return self;
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.objectsTableView addSubview:[self.tableNavigationController view]];
@@ -59,6 +58,7 @@
     NSArray *subviewArray = [[NSBundle mainBundle] loadNibNamed:@"EmptySelectionView" owner:self options:nil];
     self.emptySelectionView = [subviewArray objectAtIndex:0];
     
+    // Initialize starting frames of main views
     CGRect frame = [self receiveFrameForOrientation:self.interfaceOrientation];
     [self.objectsTableView setFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
     [self.tableNavigationController.view setFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
@@ -92,6 +92,7 @@
 // Hide detailed panel by deleting its subviews and recalculating frames of views
 - (IBAction)hideDetailsPanelForSwipe:(UISwipeGestureRecognizer*)recognizer{
     
+    // If right direction swipe delete all views from details panel and hide details panel
     if (recognizer.direction == UISwipeGestureRecognizerDirectionRight){
         
         isDetailedPanelVisible = NO;
@@ -99,6 +100,7 @@
         [self calculateObjectFrame:[self receiveFrameForOrientation:self.interfaceOrientation]];
         
         if (([recognizer state] == UIGestureRecognizerStateEnded) || ([recognizer state] == UIGestureRecognizerStateCancelled)) {
+            // Return to state without details panel
             self.singleTapRecognizer.enabled = NO;
             self.longTapRecognizer.enabled = YES;
             self.swipeRecognizer.enabled = NO;
@@ -111,6 +113,7 @@
     }
 }
 
+// Show details panel
 - (IBAction)showDetailsPanelForLongTapRecognizer:(UIRotationGestureRecognizer *)recognizer{
     
     // Get the location of the gesture
@@ -142,6 +145,7 @@
     }
 }
 
+// Make selection or deselection of the specified cell
 - (IBAction)selectForTapRecognizer:(id)recognizer{
     
     // Get the location of the gesture
@@ -188,6 +192,7 @@
         // Detail panel is visible. Make left and right views occupy equal width space
         [self.detailedPanelView setFrame:CGRectMake(frame.size.width/2, navFrame.size.height + navFrame.origin.y, frame.size.width/2, frame.size.height - navFrame.size.height - navFrame.origin.y)];
         [self.tableNavigationController.navigationBar setFrame:navFrame];
+        
         // Add detail panel appearance animation
         [UIView animateWithDuration:0.5 animations:^{
             [self.objectsTableView setFrame:CGRectMake(0, 0, frame.size.width/2, frame.size.height)];
@@ -195,7 +200,7 @@
         
         [self.tableNavigationController.view setFrame:CGRectMake(0, 0, self.objectsTableView.frame.size.width, self.objectsTableView.frame.size.height)];
         // TODO: objectInfoController - it not correct in common. It works because its view always appears first
-        [self.objectInfoController.view setFrame:CGRectMake(0, 0, self.detailedPanelView.frame.size.width, self.detailedPanelView.frame.size.height)];
+        [self.detailedPanelView.subviews[0] setFrame:CGRectMake(0, 0, self.detailedPanelView.frame.size.width, self.detailedPanelView.frame.size.height)];
     }
     else{
         

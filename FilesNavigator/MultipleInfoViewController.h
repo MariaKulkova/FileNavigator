@@ -8,6 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+typedef enum{
+    MultipleSelectionFilesType,
+    MultipleSelectionFoldersType,
+    MultipleSelectionFileAndFolderType
+} MultipleSelectionType;
+
 @interface MultipleInfoViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 {
     NSArray *filesList;

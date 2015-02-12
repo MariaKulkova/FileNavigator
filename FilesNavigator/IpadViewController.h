@@ -10,7 +10,7 @@
 #import "FileSystemNavigationController.h"
 #import "MultipleInfoViewController.h"
 
-@interface IpadViewController : UIViewController <UIDocumentInteractionControllerDelegate>
+@interface IpadViewController : UIViewController
 {
     // flag that shows whether detailed panel is visible or not
     BOOL isDetailedPanelVisible;

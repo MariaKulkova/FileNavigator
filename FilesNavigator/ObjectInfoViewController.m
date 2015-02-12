@@ -76,15 +76,15 @@
     // Determines file type and sets right icon in it representation
     if ([fileType isEqualToString:NSFileTypeDirectory] || [fileType isEqualToString:NSFileTypeSymbolicLink]){
         // Directory file type
-        image = [UIImage imageNamed:@"folderBig.png"];
+        image = [UIImage imageNamed:@"Folder_material_1024.png"];
     }
     else if ([fileType isEqualToString:NSFileTypeRegular]){
         // Regular file type
-        image = [UIImage imageNamed:@"fileBig.png"];
+        image = [UIImage imageNamed:@"File_material_1024.png"];
     }
     else {
         // Other types of files
-        image = [UIImage imageNamed:@"fileBig.png"];
+        image = [UIImage imageNamed:@"File_material_1024.png"];
     }
     return image;
 }

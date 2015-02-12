@@ -16,7 +16,7 @@
  @param fileType - contains type of file
  @return image which complys with specified type of file
  */
--(UIImage*) receiveImageForFileGroup;
+-(UIImage*) receiveImageForFileGroup: (MultipleSelectionType) selectionType;
 
 @end
 
@@ -26,10 +26,41 @@
 - (void) representObjectsInfo:(NSArray *)objects{
     
     filesList = objects;
-    self.objectsImage.image = [self receiveImageForFileGroup];
-    self.itemsCountLabel.text = [NSString stringWithFormat:@"%d Items", filesList.count];
-    double totalSize = [self calculateTotalSize];
+    self.itemsCountLabel.text = [NSString stringWithFormat:@"%lu Items", (unsigned long)filesList.count];
     
+    // size and selection type calculation
+    double totalSize = 0;
+    MultipleSelectionType selectionType;
+    FileSystemItemInfo *firstObject = objects.firstObject;
+    NSString *firstObjectType = firstObject.fileType;
+    
+    // Initial multipl selection type
+    if ([firstObjectType isEqualToString:NSFileTypeDirectory] || [firstObjectType isEqualToString:NSFileTypeSymbolicLink]) {
+        selectionType = MultipleSelectionFoldersType;
+    }
+    else{
+        selectionType = MultipleSelectionFilesType;
+    }
+    
+    // Total size and selection type calculation
+    for (FileSystemItemInfo *item in filesList){
+        
+        // If some item's type isn't equal to the first item's type selection belongs to file-and-folder type
+        if (![item.fileType isEqualToString:firstObjectType]) {
+            selectionType = MultipleSelectionFileAndFolderType;
+        }
+        if (isnan(item.capacity)){
+            totalSize = NAN;
+            break;
+        }
+        else{
+            totalSize += item.capacity;
+        }
+    }
+    
+    self.objectsImage.image = [self receiveImageForFileGroup: selectionType];
+    
+    // If some item's size hasn't been already calculated it starts calculation animation with spinner
     if (isnan(totalSize)) {
         [self.calculationSpinner startAnimating];
         self.totalSizeLable.text = @"";
@@ -83,29 +114,24 @@
 }
 
 // Match file type and its graphical representation
-- (UIImage*) receiveImageForFileGroup{
-    NSMutableArray *tempFilesList = [[filesList sortedArrayUsingSelector:@selector(compare:)] mutableCopy];
+- (UIImage*) receiveImageForFileGroup: (MultipleSelectionType) selectionType{
+
     UIImage* image;
     
     // Determines files group type and sets right icon in it representation
-    // In dorted list directories goes before files. It means that if the first and the last objects are directories there are no files in list.
-    // If the first object is regular file there are no directories in list
-    FileSystemItemInfo *firstObject = tempFilesList.firstObject;
-    FileSystemItemInfo *lastObject = tempFilesList.lastObject;
-    if ([firstObject.fileType isEqualToString:NSFileTypeDirectory] || [firstObject.fileType isEqualToString:NSFileTypeSymbolicLink]){
-        if ([lastObject.fileType isEqualToString:NSFileTypeDirectory] || [lastObject.fileType isEqualToString:NSFileTypeSymbolicLink]){
-            // Many directories
-            image = [UIImage imageNamed:@"foldersBig.png"];
-        }
-        else{
-            // Files and directories
-            image = [UIImage imageNamed:@"fileAndFolderBig"];
-        }
+    switch (selectionType) {
+        case MultipleSelectionFilesType:
+            image = [UIImage imageNamed:@"Files_material_1024.png"];
+            break;
+        case MultipleSelectionFoldersType:
+            image = [UIImage imageNamed:@"Folders_material_1024.png"];
+            break;
+        
+        case MultipleSelectionFileAndFolderType:
+            image = [UIImage imageNamed:@"File_folder_material_1024.png"];
+            break;
     }
-    else if ([firstObject.fileType isEqualToString:NSFileTypeRegular]){
-        // Regular files
-        image = [UIImage imageNamed:@"filesBig.png"];
-    }
+    
     return image;
 }
 
