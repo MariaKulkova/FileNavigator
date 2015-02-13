@@ -13,6 +13,9 @@
 #import "NotificationConstants.h"
 
 @interface ObjectsTableViewController ()
+{
+    dispatch_semaphore_t test;
+}
 
 /**
  Match file type and its graphical representation
@@ -48,7 +51,7 @@
         self.filesList = [tempFileList sortedArrayUsingSelector:@selector(compare:)];
         
         // Synhronization objects
-        
+        test = dispatch_semaphore_create(1);
         fileManagerLinksSemaphor = dispatch_semaphore_create(1);
         cancelledCalculationsSemaphor = dispatch_semaphore_create(1);
         fileManagerLinks = [[NSMutableArray alloc] initWithCapacity:self.filesList.count];
@@ -74,9 +77,7 @@
     [self.navigationItem setBackBarButtonItem:customBackButton];
     self.navigationController.navigationBar.tintColor = [UIColor orangeColor];
     
-    // Links sell with .nib file representing cell
-    [self.tableView registerNib:[UINib nibWithNibName:@"MyCustomCell" bundle:nil] forCellReuseIdentifier:@"reuseCell"];
-    FileRepresentViewCell *cell = (FileRepresentViewCell*)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+   FileRepresentViewCell *cell = (FileRepresentViewCell*)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
     
     // Set shifting of table view separators
     CGFloat xInset = cell.fileNameLabel.frame.origin.x;
@@ -128,11 +129,11 @@
                     item.capacity = directorySize;
                     
                     @try {
-                        if (weakSelf.tableView != nil) {
-                
-                            NSArray *indexes = [weakSelf.tableView indexPathsForVisibleRows];
-                            for (NSIndexPath *index in indexes) {
-                                if (index.row == i) {
+                            if (weakSelf.tableView != nil) {
+                    
+                                NSArray *indexes = [weakSelf.tableView indexPathsForVisibleRows];
+                                NSIndexPath *index = [NSIndexPath indexPathForRow:i inSection:0];
+                                if ([indexes containsObject:index]){
                                     
                                     //If row is visible updates size information
                                     dispatch_semaphore_wait(cancelledCalculationsSemaphor, DISPATCH_TIME_FOREVER);
@@ -155,9 +156,9 @@
                                         item.capacity = NAN;
                                     }
                                     dispatch_semaphore_signal(cancelledCalculationsSemaphor);
+
                                 }
                             }
-                        }
                     }
                     @catch (NSException *exception) {
                         NSLog(@"Exception appeared during rows updating. Reason: %@", exception.reason);
@@ -195,6 +196,16 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
     FileRepresentViewCell *cell = [tableView dequeueReusableCellWithIdentifier:REUSE_IDENTIFICATOR];
+    if (cell == nil) {
+        
+        [[NSBundle mainBundle] loadNibNamed:@"MyCustomCell" owner:self options:nil];
+        
+        // The checkedTableViewCell property is just a temporary placeholder for loading the Nib.
+        cell = _cell;
+        
+        // We don't need this anymore, so set to nil.
+        self.cell = nil;
+    }
     
     FileSystemItemInfo *fileListItem = [self.filesList objectAtIndex:indexPath.row];
     

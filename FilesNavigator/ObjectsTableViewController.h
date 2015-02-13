@@ -45,6 +45,8 @@
 /// Contains index paths to rows which were selected by user
 @property (readonly) NSArray *selectedRows;
 
+@property (weak, nonatomic) IBOutlet FileRepresentViewCell *cell;
+
 /**
  Initializes controller instance with path to file system object which content must be shown
  It also initializes recursive asynchronous computation of directories real sizes
