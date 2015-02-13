@@ -10,6 +10,9 @@
 #import "FileSystemNavigationController.h"
 #import "MultipleInfoViewController.h"
 
+/**
+ Controller for iPad devices which allows to interact user with interface
+ */
 @interface IpadViewController : UIViewController
 {
     // flag that shows whether detailed panel is visible or not
@@ -22,6 +25,7 @@
 /// View controller for group object detailed information representation
 @property (strong, nonatomic) MultipleInfoViewController *multipleInfoController;
 
+/// Navigation controller allows to represent navigation through the file system objects
 @property (strong, nonatomic) FileSystemNavigationController *tableNavigationController;
 
 // View which appears, when no items were selected

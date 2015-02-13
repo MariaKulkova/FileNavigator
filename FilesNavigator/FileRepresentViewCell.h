@@ -15,6 +15,7 @@
  */
 @interface FileRepresentViewCell : UITableViewCell
 {
+    // Storage cell's background color before selection
     UIColor *defaultColor;
 }
 

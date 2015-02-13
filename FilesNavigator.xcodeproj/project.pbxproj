@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4C5B0B821A8C96F000E7242C /* Folder_material.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C5B0B811A8C96F000E7242C /* Folder_material.png */; };
-		4C5B0B841A8C972700E7242C /* check2.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C5B0B831A8C972700E7242C /* check2.png */; };
+		4C5B0B841A8C972700E7242C /* check.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C5B0B831A8C972700E7242C /* check.png */; };
 		4C5B0B861A8C997800E7242C /* File_material.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C5B0B851A8C997800E7242C /* File_material.png */; };
 		4C5B0B891A8C9D0A00E7242C /* File_material_1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C5B0B871A8C9D0A00E7242C /* File_material_1024.png */; };
 		4C5B0B8A1A8C9D0A00E7242C /* Folder_material_1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C5B0B881A8C9D0A00E7242C /* Folder_material_1024.png */; };
@@ -47,7 +47,7 @@
 
 /* Begin PBXFileReference section */
 		4C5B0B811A8C96F000E7242C /* Folder_material.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Folder_material.png; sourceTree = "<group>"; };
-		4C5B0B831A8C972700E7242C /* check2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = check2.png; sourceTree = "<group>"; };
+		4C5B0B831A8C972700E7242C /* check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = check.png; sourceTree = "<group>"; };
 		4C5B0B851A8C997800E7242C /* File_material.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = File_material.png; sourceTree = "<group>"; };
 		4C5B0B871A8C9D0A00E7242C /* File_material_1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = File_material_1024.png; sourceTree = "<group>"; };
 		4C5B0B881A8C9D0A00E7242C /* Folder_material_1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Folder_material_1024.png; sourceTree = "<group>"; };
@@ -150,7 +150,7 @@
 				4C5B0B871A8C9D0A00E7242C /* File_material_1024.png */,
 				4C5B0B881A8C9D0A00E7242C /* Folder_material_1024.png */,
 				4C5B0B851A8C997800E7242C /* File_material.png */,
-				4C5B0B831A8C972700E7242C /* check2.png */,
+				4C5B0B831A8C972700E7242C /* check.png */,
 				4C5B0B811A8C96F000E7242C /* Folder_material.png */,
 			);
 			name = Recources;
@@ -315,7 +315,7 @@
 				4C5B0B8E1A8CA2C400E7242C /* Folders_material_1024.png in Resources */,
 				4C5B0B821A8C96F000E7242C /* Folder_material.png in Resources */,
 				4CCC13921A68E98F00D9D639 /* Images.xcassets in Resources */,
-				4C5B0B841A8C972700E7242C /* check2.png in Resources */,
+				4C5B0B841A8C972700E7242C /* check.png in Resources */,
 				4C5B0B891A8C9D0A00E7242C /* File_material_1024.png in Resources */,
 				4C85C5B21A69546D000B4BF7 /* MyCustomCell.xib in Resources */,
 				4CD0DA261A7BD28B003F2132 /* iPadStoryboard.storyboard in Resources */,

@@ -9,6 +9,7 @@
 #ifndef FilesNavigator_NotificationConstants_h
 #define FilesNavigator_NotificationConstants_h
 
+// Constants for notification center working
 #define FINISH_CALCULATION_NOTIFICATION @"SizeCalculationFinishedNotificator"
 #define INDEX_KEY @"Index"
 

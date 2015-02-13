@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "FileRepresentViewCell.h"
 
+/**
+ Controller allows to interact with table view that represents contain of file system
+ */
 @interface ObjectsTableViewController : UITableViewController <UIDocumentInteractionControllerDelegate>
 {
     // Custom queue for one directory size calculation task storage

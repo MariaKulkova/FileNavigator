@@ -28,10 +28,16 @@
 // Definition of UINavigationController delegate. Describes the process of controllers popping from stack of view controllers
 - (UIViewController *)popViewControllerAnimated:(BOOL)animated
 {
-    // If view controller is popped from navigation controller it interrupts process of directories sizes calculation
-    ObjectsTableViewController *popedController = (ObjectsTableViewController*)[super popViewControllerAnimated:animated];
-    [popedController cancelCalculations];
-    return popedController;
+    // If view controller popped from navigation controller is ObjectsTableViewController it interrupts process of directories sizes calculation
+    if ([[self topViewController] class] == [ObjectsTableViewController class]){
+        ObjectsTableViewController *poppedController = (ObjectsTableViewController*)[super popViewControllerAnimated:animated];
+        [poppedController cancelCalculations];
+        return poppedController;
+    }
+    else{
+        // Otherwise controller is simply popped from stack
+        return [super popViewControllerAnimated:animated];
+    }
 }
 
 @end

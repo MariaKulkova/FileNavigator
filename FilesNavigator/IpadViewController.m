@@ -13,6 +13,9 @@
 #import "NotificationConstants.h"
 
 @interface IpadViewController ()
+{
+    dispatch_semaphore_t testSemaphor;
+}
 
 /// Gesture recognizer for long tap
 @property(strong, nonatomic) UILongPressGestureRecognizer *longTapRecognizer;
@@ -36,6 +39,7 @@
         self.multipleInfoController = [[MultipleInfoViewController alloc] init];
         ObjectsTableViewController *rootViewController = [[ObjectsTableViewController alloc] initWithFilePath:@"/"];
         self.tableNavigationController = [[FileSystemNavigationController alloc] initWithRootViewController:rootViewController];
+        testSemaphor = dispatch_semaphore_create(1);
         
         // Subscribe to event of size calculation finish
         [[NSNotificationCenter defaultCenter]
@@ -62,7 +66,7 @@
     CGRect frame = [self receiveFrameForOrientation:self.interfaceOrientation];
     [self.objectsTableView setFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
     [self.tableNavigationController.view setFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
-    [self.detailedPanelView setFrame:CGRectZero];
+    [self.detailedPanelView setFrame:CGRectMake(frame.size.width, frame.origin.y, 0, frame.size.height)];
     
     //Long tap
     //-------------------------------------------------------------------------------------------------------------
@@ -186,32 +190,32 @@
     // Increase navigation bar width to width of window
     CGRect navFrame = self.tableNavigationController.navigationBar.frame;
     navFrame.size.width = frame.size.width;
+    CGFloat navigationBarVerticalSpace = navFrame.origin.y + navFrame.size.height;
     
     if (isDetailedPanelVisible) {
         
         // Detail panel is visible. Make left and right views occupy equal width space
-        [self.detailedPanelView setFrame:CGRectMake(frame.size.width/2, navFrame.size.height + navFrame.origin.y, frame.size.width/2, frame.size.height - navFrame.size.height - navFrame.origin.y)];
         [self.tableNavigationController.navigationBar setFrame:navFrame];
         
         // Add detail panel appearance animation
         [UIView animateWithDuration:0.5 animations:^{
             [self.objectsTableView setFrame:CGRectMake(0, 0, frame.size.width/2, frame.size.height)];
         }];
-        
-        [self.tableNavigationController.view setFrame:CGRectMake(0, 0, self.objectsTableView.frame.size.width, self.objectsTableView.frame.size.height)];
-        // TODO: objectInfoController - it not correct in common. It works because its view always appears first
+        [self.detailedPanelView setFrame:CGRectMake(frame.size.width/2, navigationBarVerticalSpace, frame.size.width/2, frame.size.height - navigationBarVerticalSpace)];
         [self.detailedPanelView.subviews[0] setFrame:CGRectMake(0, 0, self.detailedPanelView.frame.size.width, self.detailedPanelView.frame.size.height)];
+        [self.tableNavigationController.view setFrame:CGRectMake(0, 0, self.objectsTableView.frame.size.width, self.objectsTableView.frame.size.height)];
     }
     else{
         
         // Detail panel isn't visible. Make table view occupy all space of application
         // Add animation of detail panel disapearing.It is necessary to add navigation bar frame changing to achive correct animation effect
         [UIView animateWithDuration:0.5 animations:^{
-            [self.objectsTableView setFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
             [self.tableNavigationController.navigationBar setFrame:navFrame];
+            [self.objectsTableView setFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+            
         }];
+        [self.detailedPanelView setFrame:CGRectMake(frame.size.width, navigationBarVerticalSpace, 0, frame.size.height - navigationBarVerticalSpace)];
         [self.tableNavigationController.view setFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
-        [self.detailedPanelView setFrame:CGRectZero];
     }
 }
 

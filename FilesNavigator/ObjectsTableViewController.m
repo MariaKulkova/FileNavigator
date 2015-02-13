@@ -48,6 +48,7 @@
         self.filesList = [tempFileList sortedArrayUsingSelector:@selector(compare:)];
         
         // Synhronization objects
+        
         fileManagerLinksSemaphor = dispatch_semaphore_create(1);
         cancelledCalculationsSemaphor = dispatch_semaphore_create(1);
         fileManagerLinks = [[NSMutableArray alloc] initWithCapacity:self.filesList.count];
@@ -76,6 +77,8 @@
     // Links sell with .nib file representing cell
     [self.tableView registerNib:[UINib nibWithNibName:@"MyCustomCell" bundle:nil] forCellReuseIdentifier:@"reuseCell"];
     FileRepresentViewCell *cell = (FileRepresentViewCell*)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    
+    // Set shifting of table view separators
     CGFloat xInset = cell.fileNameLabel.frame.origin.x;
     [self.tableView setSeparatorInset:UIEdgeInsetsMake(0, xInset, 0, 0)];
 }
@@ -137,7 +140,7 @@
                                         
                                         // If computation was not interrupted it updates cell
                                         //----------------------------------------------------------------------------------------
-                                        dispatch_async(dispatch_get_main_queue(), ^{
+                                        dispatch_sync(dispatch_get_main_queue(), ^{
                                             if (weakSelf.tableView != nil){
                                                 [weakSelf.tableView beginUpdates];
                                                 [weakSelf.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:index] withRowAnimation:UITableViewRowAnimationNone];
@@ -191,26 +194,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
-//    static NSString* cellIdentifier = @"reuseCell";
     FileRepresentViewCell *cell = [tableView dequeueReusableCellWithIdentifier:REUSE_IDENTIFICATOR];
-    
-//    if (cell == nil) {
-//        NSLog(@"creating a new cell");
-//        
-//        // Load the table view cell from a Nib file.
-//        NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"MyCustomCell" owner:self options:nil];
-//        
-//        // The checkedTableViewCell property is just a temporary placeholder for loading the Nib.
-//        cell = [topLevelObjects objectAtIndex:0];
-//    }
-    
-     //Links sell with .xib file representing cell
-//    if (!cell)
-//    {
-//        NSLog(@"creating a new cell");
-//        [tableView registerNib:[UINib nibWithNibName:@"MyCustomCell" bundle:nil] forCellReuseIdentifier:cellIdentifier];
-//        cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-//    }
     
     FileSystemItemInfo *fileListItem = [self.filesList objectAtIndex:indexPath.row];
     

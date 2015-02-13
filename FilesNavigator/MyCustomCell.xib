@@ -36,7 +36,7 @@
                             <constraint firstAttribute="width" constant="29" id="hIB-Xj-ueM"/>
                         </constraints>
                     </imageView>
-                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="check2.png" translatesAutoresizingMaskIntoConstraints="NO" id="pFa-6s-i5D" userLabel="checkImage">
+                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="check.png" translatesAutoresizingMaskIntoConstraints="NO" id="pFa-6s-i5D" userLabel="checkImage">
                         <rect key="frame" x="8" y="8" width="29" height="29"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="29" id="JTd-jL-6s1"/>
@@ -74,6 +74,6 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="check2.png" width="29" height="29"/>
+        <image name="check.png" width="29" height="29"/>
     </resources>
 </document>
