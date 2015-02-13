@@ -18,7 +18,6 @@
 
 // Makes cell apperance to correspond to selected state
 - (void) setSelectedForDetailedInfo{
-    NSLog(@"select");
     _isSelected = YES;
     defaultColor = [self.backgroundColor copy];
     self.backgroundColor = [UIColor colorWithRed:.8 green:.8 blue:.8 alpha:.5];

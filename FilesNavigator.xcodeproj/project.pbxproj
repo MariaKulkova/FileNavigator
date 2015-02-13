@@ -29,8 +29,8 @@
 		4CCC13951A68E98F00D9D639 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4CCC13931A68E98F00D9D639 /* LaunchScreen.xib */; };
 		4CCC13A11A68E98F00D9D639 /* FilesNavigatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CCC13A01A68E98F00D9D639 /* FilesNavigatorTests.m */; };
 		4CCC13B81A68FACB00D9D639 /* FileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CCC13B71A68FACB00D9D639 /* FileManager.m */; };
-		4CCC13BB1A68FB6F00D9D639 /* FileSystemItemInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CCC13BA1A68FB6F00D9D639 /* FileSystemItemInfo.m */; };
 		4CCC13BE1A68FC2E00D9D639 /* FileRepresentViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CCC13BD1A68FC2E00D9D639 /* FileRepresentViewCell.m */; };
+		4CCC377F1A8DF1FB0032FEF5 /* FileSystemItemInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CCC377E1A8DF1FB0032FEF5 /* FileSystemItemInfo.m */; };
 		4CD0DA241A7B7F89003F2132 /* IpadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CD0DA231A7B7F89003F2132 /* IpadViewController.m */; };
 		4CD0DA261A7BD28B003F2132 /* iPadStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4CD0DA251A7BD28A003F2132 /* iPadStoryboard.storyboard */; };
 /* End PBXBuildFile section */
@@ -79,10 +79,10 @@
 		4CCC13A01A68E98F00D9D639 /* FilesNavigatorTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FilesNavigatorTests.m; sourceTree = "<group>"; };
 		4CCC13B61A68FACB00D9D639 /* FileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileManager.h; sourceTree = "<group>"; };
 		4CCC13B71A68FACB00D9D639 /* FileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileManager.m; sourceTree = "<group>"; };
-		4CCC13B91A68FB6F00D9D639 /* FileSystemItemInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FileSystemItemInfo.h; path = ../../LS_project/LS_project/FileSystemItemInfo.h; sourceTree = "<group>"; };
-		4CCC13BA1A68FB6F00D9D639 /* FileSystemItemInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FileSystemItemInfo.m; path = ../../LS_project/LS_project/FileSystemItemInfo.m; sourceTree = "<group>"; };
 		4CCC13BC1A68FC2E00D9D639 /* FileRepresentViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileRepresentViewCell.h; sourceTree = "<group>"; };
 		4CCC13BD1A68FC2E00D9D639 /* FileRepresentViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileRepresentViewCell.m; sourceTree = "<group>"; };
+		4CCC377D1A8DF1FB0032FEF5 /* FileSystemItemInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileSystemItemInfo.h; sourceTree = "<group>"; };
+		4CCC377E1A8DF1FB0032FEF5 /* FileSystemItemInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileSystemItemInfo.m; sourceTree = "<group>"; };
 		4CD0DA221A7B7F89003F2132 /* IpadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IpadViewController.h; sourceTree = "<group>"; };
 		4CD0DA231A7B7F89003F2132 /* IpadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IpadViewController.m; sourceTree = "<group>"; };
 		4CD0DA251A7BD28A003F2132 /* iPadStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = iPadStoryboard.storyboard; sourceTree = "<group>"; };
@@ -159,10 +159,10 @@
 		4CC837C91A6D3CE200542A89 /* ModelObjects */ = {
 			isa = PBXGroup;
 			children = (
-				4CCC13B91A68FB6F00D9D639 /* FileSystemItemInfo.h */,
-				4CCC13BA1A68FB6F00D9D639 /* FileSystemItemInfo.m */,
 				4CCC13B61A68FACB00D9D639 /* FileManager.h */,
 				4CCC13B71A68FACB00D9D639 /* FileManager.m */,
+				4CCC377D1A8DF1FB0032FEF5 /* FileSystemItemInfo.h */,
+				4CCC377E1A8DF1FB0032FEF5 /* FileSystemItemInfo.m */,
 			);
 			name = ModelObjects;
 			sourceTree = "<group>";
@@ -338,10 +338,10 @@
 			files = (
 				4CC82DFC1A71417300E98F97 /* FileSystemNavigationController.m in Sources */,
 				4CCC13BE1A68FC2E00D9D639 /* FileRepresentViewCell.m in Sources */,
+				4CCC377F1A8DF1FB0032FEF5 /* FileSystemItemInfo.m in Sources */,
 				4CC328EB1A82215100B2D6D5 /* MultipleInfoViewController.m in Sources */,
 				4CCC138A1A68E98F00D9D639 /* AppDelegate.m in Sources */,
 				4CCC13871A68E98F00D9D639 /* main.m in Sources */,
-				4CCC13BB1A68FB6F00D9D639 /* FileSystemItemInfo.m in Sources */,
 				4CCC13B81A68FACB00D9D639 /* FileManager.m in Sources */,
 				4CC5D85B1A792940006D8964 /* ObjectInfoViewController.m in Sources */,
 				4CCB32C21A7FB53F00015E7B /* ObjectsTableViewController.m in Sources */,

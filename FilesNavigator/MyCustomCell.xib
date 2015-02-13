@@ -17,27 +17,25 @@
                     <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="4xE-sl-wha" userLabel="sizeCalculationActivityIndicator">
                         <rect key="frame" x="290" y="11" width="20" height="20"/>
                     </activityIndicatorView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="745" misplaced="YES" text="" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jaM-Lu-IuK" userLabel="nameLabel">
-                        <rect key="frame" x="48" y="11" width="42" height="21"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="745" text="" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jaM-Lu-IuK" userLabel="nameLabel">
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" misplaced="YES" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HBu-dn-ARl" userLabel="sizeLable">
-                        <rect key="frame" x="98" y="11" width="212" height="21"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HBu-dn-ARl" userLabel="sizeLable">
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uR4-EU-UAO" userLabel="fileImage">
-                        <rect key="frame" x="8" y="8" width="29" height="29"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="uR4-EU-UAO" userLabel="fileImage">
+                        <rect key="frame" x="8" y="7" width="29" height="29"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="29" id="QYW-NB-isi"/>
                             <constraint firstAttribute="width" constant="29" id="hIB-Xj-ueM"/>
                         </constraints>
                     </imageView>
-                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="check.png" translatesAutoresizingMaskIntoConstraints="NO" id="pFa-6s-i5D" userLabel="checkImage">
-                        <rect key="frame" x="8" y="8" width="29" height="29"/>
+                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="check.png" translatesAutoresizingMaskIntoConstraints="NO" id="pFa-6s-i5D" userLabel="checkImage">
+                        <rect key="frame" x="8" y="7" width="29" height="29"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="29" id="JTd-jL-6s1"/>
                             <constraint firstAttribute="height" constant="29" id="g8n-0e-GP1"/>
